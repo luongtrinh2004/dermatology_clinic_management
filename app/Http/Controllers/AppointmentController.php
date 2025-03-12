@@ -50,11 +50,33 @@ class AppointmentController extends Controller
     }
 
 
+    public function searchAppointments(Request $request)
+    {
+        $doctorId = auth()->user()->id; // Lấy ID của bác sĩ đăng nhập
+        $query = $request->input('query');
+
+        // Tìm kiếm lịch hẹn của bác sĩ hiện tại theo tên bệnh nhân, ngày khám hoặc trạng thái
+        $appointments = Appointment::where('doctor_id', $doctorId)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%")
+                    ->orWhere('appointment_date', 'LIKE', "%$query%")
+                    ->orWhere('status', 'LIKE', "%$query%");
+            })
+            ->orderBy('appointment_date', 'asc')
+            ->get();
+
+        return view('role.schedule', compact('appointments'));
+
+    }
+
+
 
     // Hiển thị danh sách lịch hẹn của bệnh nhân
     public function index()
     {
-        $appointments = Appointment::where('patient_id', Auth::id())->get();
-        return view('appointments.index', compact('appointments'));
+        $appointments = Appointment::orderBy('appointment_date', 'asc')->get();
+
+        return view('role.schedule', compact('appointments'));
     }
+
 }

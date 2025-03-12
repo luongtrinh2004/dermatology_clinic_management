@@ -35,6 +35,9 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::middleware(['auth'])->group(function () {
     Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::get('/appointments/search', [AppointmentController::class, 'searchAppointments'])->name('appointments.search');
+
+
 });
 
 
