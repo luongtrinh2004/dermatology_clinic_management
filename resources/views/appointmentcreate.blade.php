@@ -80,7 +80,58 @@
                 <input type="date" name="appointment_date" id="appointment_date" class="form-control" required>
             </div>
         </div>
+        <div class="row mb-3">
+            <label for="shift" class="col-sm-2 col-form-label">Chọn Ca Làm Việc</label>
+            <div class="col-sm-10">
+                <select name="shift" id="shift" class="form-control" required>
+                    <option value="">-- Vui lòng chọn ngày trước --</option>
+                    @if(isset($editAppointment))
+                    <option value="morning" {{ $editAppointment->shift == 'morning' ? 'selected' : '' }}>08:00 - 12:00</option>
+                    <option value="afternoon" {{ $editAppointment->shift == 'afternoon' ? 'selected' : '' }}>14:00 - 18:00</option>
+                    @endif
+                </select>
+            </div>
 
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#appointment_date').change(function() {
+                    var selectedDate = $(this).val();
+                    var doctorId = $('#doctor_id').val();
+                    $('#shift').html('<option value="">-- Đang tải ca làm việc... --</option>');
+
+                    if (selectedDate && doctorId) {
+                        $.ajax({
+                            url: '/get-working-hours',
+                            type: 'GET',
+                            data: {
+                                doctor_id: doctorId,
+                                date: selectedDate
+                            },
+                            success: function(data) {
+                                $('#shift').html('<option value="">-- Chọn Ca Làm Việc --</option>');
+                                if (data.morning || data.afternoon) {
+                                    if (data.morning) {
+                                        $('#shift').append('<option value="morning">08:00 - 12:00</option>');
+                                    }
+                                    if (data.afternoon) {
+                                        $('#shift').append('<option value="afternoon">14:00 - 18:00</option>');
+                                    }
+                                } else {
+                                    $('#shift').html('<option value="">-- Không có ca làm việc --</option>');
+                                }
+                            },
+                            error: function() {
+                                $('#shift').html('<option value="">-- Lỗi khi tải dữ liệu --</option>');
+                            }
+                        });
+                    } else {
+                        $('#shift').html('<option value="">-- Vui lòng chọn ngày trước --</option>');
+                    }
+                });
+            });
+        </script>
         <div class="row mb-3">
             <label for="description" class="col-sm-2 col-form-label">Mô tả</label>
             <div class="col-sm-10">
@@ -93,20 +144,20 @@
 </div>
 
 <script>
-document.getElementById('specialty').addEventListener('change', function() {
-    var specialty = this.value;
-    var doctorSelect = document.getElementById('doctor_id');
-    doctorSelect.innerHTML = '<option value="">-- Đang tải danh sách bác sĩ... --</option>';
+    document.getElementById('specialty').addEventListener('change', function() {
+        var specialty = this.value;
+        var doctorSelect = document.getElementById('doctor_id');
+        doctorSelect.innerHTML = '<option value="">-- Đang tải danh sách bác sĩ... --</option>';
 
-    fetch('/get-doctors/' + specialty)
-        .then(response => response.json())
-        .then(data => {
-            doctorSelect.innerHTML = '<option value="">-- Chọn bác sĩ --</option>';
-            data.forEach(doctor => {
-                doctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name}</option>`;
+        fetch('/get-doctors/' + specialty)
+            .then(response => response.json())
+            .then(data => {
+                doctorSelect.innerHTML = '<option value="">-- Chọn bác sĩ --</option>';
+                data.forEach(doctor => {
+                    doctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name}</option>`;
+                });
             });
-        });
-});
+    });
 </script>
 
 @endsection

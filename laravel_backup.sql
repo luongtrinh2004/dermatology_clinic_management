@@ -36,7 +36,7 @@ CREATE TABLE `appointments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `appointments` (
 
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
-INSERT INTO `appointments` VALUES (24,2,'Thúy An','trickshotsvn@gmail.com','0816260406',12,'055555555555555','ddd','2025-02-20','approved','2025-02-08 08:37:27','2025-02-20 04:04:52'),(28,2,'Trinh Luong','luong.trinh.yp464@gmail.com','0816260406',23,'21111111111111111','đau bụng quá','2025-02-14','approved','2025-02-13 02:22:04','2025-02-13 02:22:04'),(29,2,'Nguyễn Minh Anh','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:38:24','2025-02-13 02:38:24'),(30,2,'Nguyễn Minh Anh','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:39:31','2025-02-13 02:39:31'),(31,2,'Trinh Luong','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:41:28','2025-02-13 02:41:28'),(32,2,'Trinh Luong','lydich2003@gmail.com','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:51:46','2025-02-13 02:51:46'),(33,2,'Trinh Luong','lydich2003@gmail.com','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:52:39','2025-02-13 02:52:39'),(34,2,'Trinh Luong','lydich2003@gmail.com','0816260406',12,'05555555555','hihi','2025-02-28','approved','2025-02-13 02:53:49','2025-02-13 02:53:49'),(35,2,'Nguyên Minh ANh','lydich2003@gmail.com','0816260406',32,'05555555555','222','2025-02-27','approved','2025-02-13 02:59:29','2025-02-13 02:59:29'),(36,2,'Trinh Luong','lydich2003@gmail.com','0816260406',23,'21111111111111111','dđ','2025-02-28','approved','2025-02-13 03:11:05','2025-02-13 03:11:05'),(37,3,'Trinh Luong','sssssssssssssssssss@gmail.com','0816260406',32,'05555555555','ngứa da mặt','2025-03-05','approved','2025-02-18 06:10:05','2025-02-18 06:10:05'),(39,5,'La Lisa','sdc@gmail.com','0816260406',28,'111111111111111','tôi muốn phẫu thuật thẩm mĩ','2025-02-25','approved','2025-02-23 11:04:48','2025-02-23 11:04:48'),(40,6,'eee eee eee','ggg@gmail.com','0123456789',23,'11111111111','ffffff','2025-02-28','approved','2025-02-27 02:27:20','2025-02-27 02:27:20');
+INSERT INTO `appointments` VALUES (24,2,'Thúy An','trickshotsvn@gmail.com','0816260406',12,'055555555555555','ddd','2025-02-20','approved','2025-02-08 08:37:27','2025-02-20 04:04:52'),(28,2,'Trinh Luong','luong.trinh.yp464@gmail.com','0816260406',23,'21111111111111111','đau bụng quá','2025-02-14','approved','2025-02-13 02:22:04','2025-02-13 02:22:04'),(29,2,'Nguyễn Minh Anh','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:38:24','2025-02-13 02:38:24'),(30,2,'Nguyễn Minh Anh','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:39:31','2025-02-13 02:39:31'),(31,2,'Trinh Luong','22010064@st.phenikaa-uni.edu.vn','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:41:28','2025-02-13 02:41:28'),(32,2,'Trinh Luong','lydich2003@gmail.com','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:51:46','2025-02-13 02:51:46'),(33,2,'Trinh Luong','lydich2003@gmail.com','0816260406',1,'0123456789','hihi','2025-02-28','approved','2025-02-13 02:52:39','2025-02-13 02:52:39'),(34,2,'Trinh Luong','lydich2003@gmail.com','0816260406',12,'05555555555','hihi','2025-02-28','approved','2025-02-13 02:53:49','2025-02-13 02:53:49'),(35,2,'Nguyên Minh ANh','lydich2003@gmail.com','0816260406',32,'05555555555','222','2025-02-27','approved','2025-02-13 02:59:29','2025-02-13 02:59:29'),(36,2,'Trinh Luong','lydich2003@gmail.com','0816260406',23,'21111111111111111','dđ','2025-02-28','approved','2025-02-13 03:11:05','2025-02-13 03:11:05'),(37,3,'Trinh Luong','sssssssssssssssssss@gmail.com','0816260406',32,'05555555555','ngứa da mặt','2025-03-05','approved','2025-02-18 06:10:05','2025-02-18 06:10:05'),(39,5,'La Lisa','sdc@gmail.com','0816260406',28,'111111111111111','tôi muốn phẫu thuật thẩm mĩ','2025-02-25','approved','2025-02-23 11:04:48','2025-02-23 11:04:48');
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +69,7 @@ CREATE TABLE `doctors` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `doctors_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `doctors` (
 
 LOCK TABLES `doctors` WRITE;
 /*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
-INSERT INTO `doctors` VALUES (2,'Nguyễn Văn A','a123@gmail.com','$2y$10$49vw8fw0/B1TSWz/Vc9xUON51mbFdevOvD1FE0CpsJXmxqK2gjv.u','Trị nám, tàn nhang','0816260406','Dùng laser hoặc phương pháp khác để làm mờ nám, tàn nhang','img/1736926215_a.jpg','2025-01-15 00:30:15','2025-01-15 00:30:15'),(3,'Nguyễn Văn B','b123@gmail.com','$2y$10$96Bq/HSrkL6ujXMx2/cXlecAo6qN2c.O51vtAZO8THS0BdebFYNX2','Điều trị viêm da','0816260406','Chữa viêm da cơ địa, viêm da dầu, viêm da tiếp xúc','img/1738864493_1736923416_b.jpg','2025-02-06 10:54:54','2025-02-06 10:54:54'),(4,'Nguyễn Văn C','c123@gmail.com','$2y$10$H6nZPd9N0GQt4eOts0l1QuEhIe5QWjB6PsYNdsqt8DFXxm63kXNfa','Trị sẹo rỗ, sẹo lõm','0816260406','Phương pháp PRP, lăn kim, laser để tái tạo da','img/1739029484_1736923780_c.jpg','2025-02-08 08:44:44','2025-02-08 08:44:44'),(5,'Nguyễn Ngoc D','d123@gmail.com','$2y$10$AAum6V7JBiLvJ.yb9wW5F.9UD0K9BK1BU6iyeYbW7223iauxE0vN2','Điều trị mụn','0816260406','Chăm sóc da, điều trị mụn trứng cá, mụn bọc, mụn đầu đen','img/1739347643_doctor_02.jpg','2025-02-12 01:07:23','2025-02-23 09:52:24'),(6,'Nguyễn Thanh E','e123@gmail.com','$2y$10$m3JlZzrYP/IJOL5asWhe4uVbXaAYyP2XAj8FK72KwlyyGA4kj5ox6','Điều trị dị ứng da','0123456888','Chữa mọi loại dị ứng','uploads/1740459555_67bd4e23e1cdc.jpg','2025-02-24 21:59:16','2025-02-24 21:59:16');
+INSERT INTO `doctors` VALUES (2,'Nguyễn Văn A','a123@gmail.com','$2y$10$49vw8fw0/B1TSWz/Vc9xUON51mbFdevOvD1FE0CpsJXmxqK2gjv.u','Trị nám, tàn nhang','0816260406','Dùng laser hoặc phương pháp khác để làm mờ nám, tàn nhang','img/1736926215_a.jpg','2025-01-15 00:30:15','2025-01-15 00:30:15'),(3,'Nguyễn Văn B','b123@gmail.com','$2y$10$96Bq/HSrkL6ujXMx2/cXlecAo6qN2c.O51vtAZO8THS0BdebFYNX2','Điều trị viêm da','0816260406','Chữa viêm da cơ địa, viêm da dầu, viêm da tiếp xúc','img/1738864493_1736923416_b.jpg','2025-02-06 10:54:54','2025-02-06 10:54:54'),(4,'Nguyễn Văn C','c123@gmail.com','$2y$10$H6nZPd9N0GQt4eOts0l1QuEhIe5QWjB6PsYNdsqt8DFXxm63kXNfa','Trị sẹo rỗ, sẹo lõm','0816260406','Phương pháp PRP, lăn kim, laser để tái tạo da','img/1739029484_1736923780_c.jpg','2025-02-08 08:44:44','2025-02-08 08:44:44'),(5,'Nguyễn Ngoc D','d123@gmail.com','$2y$10$AAum6V7JBiLvJ.yb9wW5F.9UD0K9BK1BU6iyeYbW7223iauxE0vN2','Điều trị mụn','0816260406','Chăm sóc da, điều trị mụn trứng cá, mụn bọc, mụn đầu đen','img/1739347643_doctor_02.jpg','2025-02-12 01:07:23','2025-02-23 09:52:24');
 /*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `invoices` (
   PRIMARY KEY (`id`),
   KEY `invoices_medical_record_id_foreign` (`medical_record_id`),
   CONSTRAINT `invoices_medical_record_id_foreign` FOREIGN KEY (`medical_record_id`) REFERENCES `medical_records` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,6 +143,7 @@ CREATE TABLE `invoices` (
 
 LOCK TABLES `invoices` WRITE;
 /*!40000 ALTER TABLE `invoices` DISABLE KEYS */;
+INSERT INTO `invoices` VALUES (10,'Nguyễn Thúc Thùy Tiên','2025-02-26','0816260406',NULL,'2025-02-25',566666.00,'Phẫu Thuật Thẩm Mĩ; none','Đã thanh toán',5,'2025-02-24 20:15:18','2025-02-24 20:43:31');
 /*!40000 ALTER TABLE `invoices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +172,7 @@ CREATE TABLE `medical_records` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +181,7 @@ CREATE TABLE `medical_records` (
 
 LOCK TABLES `medical_records` WRITE;
 /*!40000 ALTER TABLE `medical_records` DISABLE KEYS */;
-INSERT INTO `medical_records` VALUES (18,2,'Nguyễn Trinh Luong','luong.trinh.yp464@gmail.com','0816260406',23,'21111111111111111','Khám da','2025-02-14',500000.00,'unpaid','viêm da','none','none','2025-02-27 03:02:36','2025-02-27 03:02:36');
+INSERT INTO `medical_records` VALUES (3,3,'Trấn Thành','tauseed@test.com','0816260406',45,'0123456789','Khám Da Sàn Lọc','2025-02-23',400000.00,'unpaid','Viêm Da Nặng','1 Mixue Trân Châu Đường Đen','1 liều 1 ngày','2025-02-23 09:29:12','2025-02-23 10:40:10'),(4,3,'Trường Giang','sssssssssssssssssss@gmail.com','0816260405',44,'111111111111111','Spa da, sửa mũi, lấy mụn đầu đen','2025-02-24',300000.00,'paid','none','none','none','2025-02-23 09:44:07','2025-02-23 09:56:12'),(5,4,'Nguyễn Minh Phương','mp@gmail.com','0816260406',23,'0123456789','Nâng cằm','2025-02-26',400000.00,'unpaid','none','none','2 ngày sau đến khám','2025-02-23 10:28:08','2025-02-24 20:42:33'),(7,2,'Trinh Luong','luong.trinh.yp464@gmail.com','0816260406',23,'21111111111111111','Trị mụn','2025-02-14',500000.00,'unpaid','none','none','none','2025-02-24 02:19:53','2025-02-24 02:26:52'),(8,5,'Nguyễn Minh Tiến','sdc@gmail.com','0816260406',23,'111111111111111','Khám Da Sàn Lọc','2025-02-25',200000.00,'paid','Da dị ứng','3 liều axitamin','1 liều 1 ngày','2025-02-24 02:26:26','2025-02-24 02:26:26'),(15,5,'Messi','sssssssssssssssssss@gmail.com','0816260406',36,'0123456789','Trắng Da','2025-02-27',400000.00,'unpaid','Lùn','Thuốc tăng chiều cao','2 liều 1 ngày','2025-02-24 10:58:40','2025-02-24 10:58:40');
 /*!40000 ALTER TABLE `medical_records` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +371,7 @@ CREATE TABLE `users` (
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'admindoctor',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +380,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Trịnh Phúc Lương','luong.trinh.yp464@gmail.com','2025-01-09 17:00:00','$2y$10$WRcm6NcHNVVW7kE5DMl9OeGTntKKL0bXrl3OFUV2PGOS8DJpjhDCS','miI36kwMZACmhD1ZLZHVb5vU2bXELbxlEYqap8F4Ph6MCWKWTba0kXsRNzW6','2025-01-09 17:00:00','2025-01-09 17:00:00','admin'),(2,'Nguyễn Văn A','a123@gmail.com',NULL,'$2y$10$GRoU0kepATUeWhVd29ZkUeO8aXeKw57pkOc91xRfNF/Muu2pqZQCG',NULL,'2025-01-15 00:30:15','2025-01-15 00:30:15','admindoctor'),(3,'Nguyễn Văn B','b123@gmail.com',NULL,'$2y$10$AZ4GgbAdQqckRoSNirTVPugtdx/8LWgT7tprvTtH/v6z54SCgJnvG',NULL,'2025-02-06 10:54:54','2025-02-06 10:54:54','admindoctor'),(4,'Nguyễn Văn C','c123@gmail.com',NULL,'$2y$10$2iSNC1oUBoP3Eij64fAH4.7xCIRL7ZJyYrJ70ww/rNL7ExUamYYBq',NULL,'2025-02-08 08:44:44','2025-02-08 08:44:44','admindoctor'),(5,'Nguyễn Thị D','d123@gmail.com',NULL,'$2y$10$YyD87xERhJXaIXdecr6aeOPoSZCqdwYoMkYEc76dBki0sqfDpZtGC',NULL,'2025-02-12 01:07:23','2025-02-12 01:07:23','admindoctor'),(6,'Nguyễn Thanh E','e123@gmail.com',NULL,'$2y$10$k3zb7DAKaBQcOgF83CfmyuP2hffOOCoAo5DFKVXjmr3E52FtPE9iW',NULL,'2025-02-24 21:59:16','2025-02-24 21:59:16','admindoctor');
+INSERT INTO `users` VALUES (1,'Trịnh Phúc Lương','luong.trinh.yp464@gmail.com','2025-01-09 17:00:00','$2y$10$WRcm6NcHNVVW7kE5DMl9OeGTntKKL0bXrl3OFUV2PGOS8DJpjhDCS','eaSRwmHWUa4A6WA8X4I8Gcg0Q1c3rKKcDL5f68riYxIh314jGZnYmSlGIObS','2025-01-09 17:00:00','2025-01-09 17:00:00','admin'),(2,'Nguyễn Văn A','a123@gmail.com',NULL,'$2y$10$GRoU0kepATUeWhVd29ZkUeO8aXeKw57pkOc91xRfNF/Muu2pqZQCG',NULL,'2025-01-15 00:30:15','2025-01-15 00:30:15','admindoctor'),(3,'Nguyễn Văn B','b123@gmail.com',NULL,'$2y$10$AZ4GgbAdQqckRoSNirTVPugtdx/8LWgT7tprvTtH/v6z54SCgJnvG',NULL,'2025-02-06 10:54:54','2025-02-06 10:54:54','admindoctor'),(4,'Nguyễn Văn C','c123@gmail.com',NULL,'$2y$10$2iSNC1oUBoP3Eij64fAH4.7xCIRL7ZJyYrJ70ww/rNL7ExUamYYBq',NULL,'2025-02-08 08:44:44','2025-02-08 08:44:44','admindoctor'),(5,'Nguyễn Thị D','d123@gmail.com',NULL,'$2y$10$YyD87xERhJXaIXdecr6aeOPoSZCqdwYoMkYEc76dBki0sqfDpZtGC',NULL,'2025-02-12 01:07:23','2025-02-12 01:07:23','admindoctor');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-02  7:38:37
+-- Dump completed on 2025-02-25 11:28:09

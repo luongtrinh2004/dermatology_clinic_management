@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Doctor; // Thêm dòng này
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -19,32 +20,34 @@ class AppointmentController extends Controller
 
     // Xử lý Lưu Lịch hẹn
     public function store(Request $request)
-{
-    $request->validate([
-        'doctor_id' => 'required|exists:doctors,id',
-        'name' => 'required|string|max:255',
-        'email' => 'required|email',
-        'phone' => 'required|string',
-        'age' => 'required|integer|min:1',
-        'cccd' => 'required|string|max:20',
-        'appointment_date' => 'required|date|after:today',
-        'description' => 'nullable|string|max:500',
-    ]);
+    {
+        $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'age' => 'required|integer|min:1',
+            'cccd' => 'required|string|max:20',
+            'appointment_date' => 'required|date|after:today',
+            'shift' => 'required|in:morning,afternoon',
+            'description' => 'nullable|string|max:500',
+        ]);
 
-    Appointment::create([
-        'doctor_id' => $request->doctor_id,
-        'name' => $request->name,
-        'email' => $request->email,
-        'phone' => $request->phone,
-        'age' => $request->age,
-        'cccd' => $request->cccd,
-        'appointment_date' => $request->appointment_date,
-        'description' => $request->description,
-        'status' => 'approved',
-    ]);
+        Appointment::create([
+            'doctor_id' => $request->doctor_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'age' => $request->age,
+            'cccd' => $request->cccd,
+            'appointment_date' => $request->appointment_date,
+            'shift' => $request->shift,
+            'description' => $request->description,
+            'status' => 'approved',
+        ]);
 
-    return redirect()->route('appointments.create')->with('success', 'Đặt lịch thành công. Chờ duyệt!');
-}
+        return redirect()->route('appointments.create')->with('success', 'Đặt lịch thành công. Chờ duyệt!');
+    }
 
 
 

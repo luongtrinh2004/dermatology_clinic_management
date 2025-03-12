@@ -9,8 +9,7 @@
     <!-- Form tìm kiếm lịch hẹn -->
     <form method="GET" action="{{ route('admin.appointments.index') }}" class="mb-4">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm lịch hẹn..."
-                value="{{ $search ?? '' }}">
+            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm lịch hẹn..." value="{{ $search ?? '' }}">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
         </div>
     </form>
@@ -35,8 +34,7 @@
                     <select name="specialty" id="specialty" class="form-control" required>
                         <option value="">-- Chọn Dịch Vụ --</option>
                         @foreach($specialties as $specialty)
-                        <option value="{{ $specialty }}"
-                            {{ isset($editAppointment) && $editAppointment->specialty == $specialty ? 'selected' : '' }}>
+                        <option value="{{ $specialty }}" {{ isset($editAppointment) && $editAppointment->specialty == $specialty ? 'selected' : '' }}>
                             {{ $specialty }}
                         </option>
                         @endforeach
@@ -53,95 +51,136 @@
                 <!-- Script AJAX -->
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
-                $(document).ready(function() {
-                    $('#specialty').change(function() {
-                        var specialty = $(this).val();
-                        $('#doctor_id').html(
-                            '<option value="">-- Đang tải danh sách bác sĩ... --</option>');
-
-                        if (specialty) {
-                            $.ajax({
-                                url: '/get-doctors-by-specialty',
-                                type: 'GET',
-                                data: {
-                                    specialty: specialty
-                                },
-                                success: function(data) {
-                                    $('#doctor_id').html(
-                                        '<option value="">-- Chọn Bác Sĩ --</option>');
-                                    $.each(data, function(index, doctor) {
-                                        $('#doctor_id').append('<option value="' +
-                                            doctor.id + '">' + doctor.name +
-                                            '</option>');
-                                    });
-                                },
-                                error: function() {
-                                    $('#doctor_id').html(
-                                        '<option value="">-- Không có bác sĩ nào --</option>'
-                                    );
-                                }
-                            });
-                        } else {
+                    $(document).ready(function() {
+                        $('#specialty').change(function() {
+                            var specialty = $(this).val();
                             $('#doctor_id').html(
-                                '<option value="">-- Chọn mục Dịch Vụ trước --</option>');
-                        }
+                                '<option value="">-- Đang tải danh sách bác sĩ... --</option>');
+
+                            if (specialty) {
+                                $.ajax({
+                                    url: '/get-doctors-by-specialty',
+                                    type: 'GET',
+                                    data: {
+                                        specialty: specialty
+                                    },
+                                    success: function(data) {
+                                        $('#doctor_id').html(
+                                            '<option value="">-- Chọn Bác Sĩ --</option>');
+                                        $.each(data, function(index, doctor) {
+                                            $('#doctor_id').append('<option value="' +
+                                                doctor.id + '">' + doctor.name +
+                                                '</option>');
+                                        });
+                                    },
+                                    error: function() {
+                                        $('#doctor_id').html(
+                                            '<option value="">-- Không có bác sĩ nào --</option>'
+                                        );
+                                    }
+                                });
+                            } else {
+                                $('#doctor_id').html(
+                                    '<option value="">-- Chọn mục Dịch Vụ trước --</option>');
+                            }
+                        });
                     });
-                });
                 </script>
 
                 <!-- Ngày hẹn -->
                 <div class="col-md-4 mb-2">
                     <label for="appointment_date" class="form-label">Ngày hẹn</label>
-                    <input type="date" name="appointment_date" id="appointment_date" class="form-control"
-                        value="{{ $editAppointment->appointment_date ?? '' }}" required>
+                    <input type="date" name="appointment_date" id="appointment_date" class="form-control" value="{{ $editAppointment->appointment_date ?? '' }}" required>
                 </div>
 
                 <!-- Tên bệnh nhân -->
                 <div class="col-md-4 mb-2">
                     <label for="name" class="form-label">Tên bệnh nhân</label>
-                    <input type="text" name="name" id="name" class="form-control"
-                        value="{{ $editAppointment->name ?? '' }}" required>
+                    <input type="text" name="name" id="name" class="form-control" value="{{ $editAppointment->name ?? '' }}" required>
                 </div>
 
                 <!-- Email -->
                 <div class="col-md-4 mb-2">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" id="email" class="form-control"
-                        value="{{ $editAppointment->email ?? '' }}" required>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ $editAppointment->email ?? '' }}" required>
                 </div>
 
                 <!-- Số điện thoại -->
                 <div class="col-md-4 mb-2">
                     <label for="phone" class="form-label">Số điện thoại</label>
-                    <input type="text" name="phone" id="phone" class="form-control"
-                        value="{{ $editAppointment->phone ?? '' }}" required>
+                    <input type="text" name="phone" id="phone" class="form-control" value="{{ $editAppointment->phone ?? '' }}" required>
                 </div>
 
                 <!-- Tuổi -->
                 <div class="col-md-4 mb-2">
                     <label for="age" class="form-label">Tuổi</label>
-                    <input type="number" name="age" id="age" class="form-control"
-                        value="{{ $editAppointment->age ?? '' }}" required>
+                    <input type="number" name="age" id="age" class="form-control" value="{{ $editAppointment->age ?? '' }}" required>
                 </div>
 
                 <!-- CCCD -->
                 <div class="col-md-4 mb-2">
                     <label for="cccd" class="form-label">CCCD</label>
-                    <input type="text" name="cccd" id="cccd" class="form-control"
-                        value="{{ $editAppointment->cccd ?? '' }}" required>
+                    <input type="text" name="cccd" id="cccd" class="form-control" value="{{ $editAppointment->cccd ?? '' }}" required>
                 </div>
 
                 <!-- Mô tả -->
                 <div class="col-md-4 mb-2">
                     <label for="description" class="form-label">Mô tả</label>
-                    <textarea name="description" id="description"
-                        class="form-control">{{ $editAppointment->description ?? '' }}</textarea>
+                    <textarea name="description" id="description" class="form-control">{{ $editAppointment->description ?? '' }}</textarea>
                 </div>
 
+                <div class="col-md-4 mb-2">
+                    <label for="shift" class="form-label">Chọn Ca Làm Việc</label>
+                    <select name="shift" id="shift" class="form-control" required>
+                        <option value="">-- Vui lòng chọn ngày trước --</option>
+                        @if(isset($editAppointment))
+                        <option value="morning" {{ $editAppointment->shift == 'morning' ? 'selected' : '' }}>08:00 - 12:00</option>
+                        <option value="afternoon" {{ $editAppointment->shift == 'afternoon' ? 'selected' : '' }}>14:00 - 18:00</option>
+                        @endif
+                    </select>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('#appointment_date').change(function() {
+                            var selectedDate = $(this).val();
+                            var doctorId = $('#doctor_id').val();
+                            $('#shift').html('<option value="">-- Đang tải ca làm việc... --</option>');
+
+                            if (selectedDate && doctorId) {
+                                $.ajax({
+                                    url: '/get-working-hours',
+                                    type: 'GET',
+                                    data: {
+                                        doctor_id: doctorId,
+                                        date: selectedDate
+                                    },
+                                    success: function(data) {
+                                        $('#shift').html('<option value="">-- Chọn Ca Làm Việc --</option>');
+                                        if (data.morning || data.afternoon) {
+                                            if (data.morning) {
+                                                $('#shift').append('<option value="morning">08:00 - 12:00</option>');
+                                            }
+                                            if (data.afternoon) {
+                                                $('#shift').append('<option value="afternoon">14:00 - 18:00</option>');
+                                            }
+                                        } else {
+                                            $('#shift').html('<option value="">-- Không có ca làm việc --</option>');
+                                        }
+                                    },
+                                    error: function() {
+                                        $('#shift').html('<option value="">-- Lỗi khi tải dữ liệu --</option>');
+                                    }
+                                });
+                            } else {
+                                $('#shift').html('<option value="">-- Vui lòng chọn ngày trước --</option>');
+                            }
+                        });
+                    });
+                </script>
                 <!-- Nút Gửi -->
                 <div class="col-md-4 mb-2">
-                    <button type="submit"
-                        class="btn {{ isset($editAppointment) ? 'btn-warning' : 'btn-success' }} w-100">
+                    <button type="submit" class="btn {{ isset($editAppointment) ? 'btn-warning' : 'btn-success' }} w-100" style="    margin-top: 31px;">
                         {{ isset($editAppointment) ? 'Lưu Thay Đổi' : 'Thêm Lịch Hẹn' }}
                     </button>
                 </div>
@@ -149,7 +188,7 @@
         </form>
 
         <!-- Danh sách lịch hẹn -->
-        <table class="table table-bordered mt-4">
+        <table class="table table-bordered mt-4" style="width: 105%;margin-left: -30px">
             <thead>
                 <tr>
                     <th>#</th>
@@ -160,6 +199,7 @@
                     <th>Mô Tả</th>
                     <th>Điện Thoại</th>
                     <th>Ngày Hẹn</th>
+                    <th>Ca Làm Việc</th>
                     <th>Trạng Thái</th>
                     <th>Hành Động</th>
                 </tr>
@@ -176,6 +216,15 @@
                     <td>{{ $appointment->phone }}</td>
                     <td>{{ $appointment->appointment_date }}</td>
                     <td>
+                        @if($appointment->shift === 'morning')
+                        <span class="badge bg-primary">08:00 - 12:00</span>
+                        @elseif($appointment->shift === 'afternoon')
+                        <span class="badge bg-info">14:00 - 18:00</span>
+                        @else
+                        <span class="badge bg-secondary">Không xác định</span>
+                        @endif
+                    </td>
+                    <td>
                         @if($appointment->status === 'pending')
                         <span class="badge bg-warning">Chờ duyệt</span>
                         @elseif($appointment->status === 'approved')
@@ -186,32 +235,27 @@
                     </td>
                     <td>
                         <!-- Nút Duyệt -->
-                        <form method="POST" action="{{ route('admin.appointments.approve', $appointment->id) }}"
-                            class="d-inline">
+                        <form method="POST" action="{{ route('admin.appointments.approve', $appointment->id) }}" class="d-inline">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
                         </form>
 
                         <!-- Nút Từ chối -->
-                        <form method="POST" action="{{ route('admin.appointments.reject', $appointment->id) }}"
-                            class="d-inline">
+                        <form method="POST" action="{{ route('admin.appointments.reject', $appointment->id) }}" class="d-inline">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-dark btn-sm">Từ chối</button>
                         </form>
 
                         <!-- Nút Sửa -->
-                        <a href="{{ route('admin.appointments.index', ['edit_id' => $appointment->id]) }}"
-                            class="btn btn-warning btn-sm">Sửa</a>
+                        <a href="{{ route('admin.appointments.index', ['edit_id' => $appointment->id]) }}" class="btn btn-warning btn-sm">Sửa</a>
 
                         <!-- Nút Xóa -->
-                        <form method="POST" action="{{ route('admin.appointments.destroy', $appointment->id) }}"
-                            class="d-inline">
+                        <form method="POST" action="{{ route('admin.appointments.destroy', $appointment->id) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này?')">Xóa</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này?')">Xóa</button>
                         </form>
                     </td>
                 </tr>
