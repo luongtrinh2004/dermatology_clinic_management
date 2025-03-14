@@ -79,6 +79,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
     // Xem lịch làm việc của bác sĩ
     Route::get('/admin/workingschedule', [AdminController::class, 'showshift'])->name('admin.showshift');
+    Route::get('/admin/workingschedule', [AdminController::class, 'showshift'])->name('admin.workingschedule');
+    Route::post('/admin/workingschedule/{doctor}', [AdminController::class, 'updateSchedule'])->name('admin.updateSchedule');
+
+
+
 });
 
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)

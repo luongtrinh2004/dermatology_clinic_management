@@ -357,9 +357,35 @@ class AdminController extends Controller
 
         return response()->json($availableShifts);
     }
-    public function showshift()
+    public function showshift(Request $request)
     {
         $doctors = Doctor::all(['id', 'name', 'specialty', 'phone', 'image', 'working_hours']);
-        return view('role.workingschedule', compact('doctors'));
+        $selectedDoctor = null;
+
+        if ($request->has('doctor_id')) {
+            $selectedDoctor = Doctor::find($request->doctor_id);
+            if ($selectedDoctor && is_string($selectedDoctor->working_hours)) {
+                $selectedDoctor->working_hours = json_decode($selectedDoctor->working_hours, true) ?? [];
+            }
+        }
+
+        return view('role.workingschedule', compact('doctors', 'selectedDoctor'));
+    }
+
+    public function updateSchedule(Request $request, $id)
+    {
+        $doctor = Doctor::findOrFail($id);
+
+        $request->validate([
+            'working_hours' => 'required|array',
+            'working_hours.*.day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'working_hours.*.shift' => 'required|in:morning,afternoon',
+        ]);
+
+        $doctor->update([
+            'working_hours' => $request->filled('working_hours') ? $request->working_hours : null,
+        ]);
+
+        return redirect()->route('admin.workingschedule', ['doctor_id' => $id])->with('success', 'Lịch làm việc đã được cập nhật.');
     }
 }

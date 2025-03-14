@@ -207,6 +207,7 @@
                     $workingHours = $editDoctor->working_hours??[];
                     @endphp
                     <button type="button" onclick="addScheduleRow()" style='margin-left: 189px;'>+ Thêm</button>
+                    @if(is_array($workingHours) || is_object($workingHours))
                     @foreach ($workingHours as $index => $schedule)
                     <div class="schedule-row">
 
@@ -228,7 +229,9 @@
                         <button type="button" style=' margin-top:-5px' class="btn btn-danger btn-sm" onclick="removeScheduleRow(this)">Xóa</button>
                     </div>
                     @endforeach
-
+                    @else
+                    <p>Không có dữ liệu lịch làm việc.</p>
+                    @endif
 
                 </div>
                 <div class="col text-center">
