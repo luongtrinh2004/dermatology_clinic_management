@@ -12,11 +12,28 @@ class DoctorController extends Controller
     /**
      * Hiển thị danh sách tất cả bác sĩ.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Doctor::all(); // Lấy tất cả bác sĩ từ database
-        return view('doctors', compact('doctors'));
+        $search = $request->input('search');
+        $specialty = $request->input('specialty');
+
+        $query = Doctor::query();
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+        }
+
+        if ($specialty) {
+            $query->where('specialty', $specialty);
+        }
+
+        $doctors = $query->get();
+        $specialties = Doctor::select('specialty')->distinct()->pluck('specialty');
+
+        return view('doctors', compact('doctors', 'search', 'specialty', 'specialties'));
     }
+
 
     /**
      * Hiển thị danh sách bác sĩ cho admin.

@@ -9,6 +9,34 @@
             Danh Sách Bác Sĩ
         </h2>
 
+        <!-- FORM TÌM KIẾM -->
+        <form method="GET" action="{{ route('doctors.index') }}" class="mb-4">
+            <div class="row g-3">
+                <!-- Tìm kiếm theo tên hoặc số điện thoại -->
+                <div class="col-md-6">
+                    <input type="text" name="search" class="form-control"
+                        placeholder="Tìm kiếm theo tên hoặc số điện thoại..." value="{{ request('search') }}">
+                </div>
+
+                <!-- Lọc theo chuyên khoa -->
+                <div class="col-md-4">
+                    <select name="specialty" class="form-control">
+                        <option value="">-- Chọn chuyên khoa --</option>
+                        @foreach($specialties as $spec)
+                            <option value="{{ $spec }}" {{ request('specialty') == $spec ? 'selected' : '' }}>
+                                {{ $spec }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Nút tìm kiếm -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+
         <div class="row justify-content-center">
             @foreach($doctors as $doctor)
                     <div class="col-lg-4 col-md-6 mb-4">
@@ -23,7 +51,7 @@
 
                                 <!-- Thông tin bác sĩ -->
                                 <h4 class="doctor-name">{{ $doctor->name }}</h4>
-                                <p class="doctor-specialty">Chuyên khoa: {{ $doctor->specialty }}</p>
+                                <p class="doctor-specialty">Chuyên môn: {{ $doctor->specialty }}</p>
 
                                 <hr class="doctor-divider">
 
