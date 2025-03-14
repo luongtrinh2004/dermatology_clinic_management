@@ -105,7 +105,7 @@
         <div class="py-3" style="background-color: #e0f7fa; border-bottom: 1px solid #ccc;">
             <div class="container d-flex justify-content-between align-items-center">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="d-flex align-items-center">
+                <a href="{{ url('/admin/dashboard') }}" class="d-flex align-items-center">
                     <img src="{{ asset('img/logo.webp') }}" alt="Logo" class="img-fluid" style="height: 50px;">
                 </a>
                 <!-- Search -->

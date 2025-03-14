@@ -18,7 +18,7 @@
         <div class="py-3" style="background-color: #e0f7fa; border-bottom: 1px solid #ccc;">
             <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="d-flex align-items-center">
+                <a href="{{ url('/admin/dashboard') }}" class="d-flex align-items-center">
                     <img src="/img/logo.webp" alt="Logo" style="height: 50px;">
                 </a>
 
@@ -58,6 +58,20 @@
         </div>
     </header>
 
+
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Thành công!</strong> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Lỗi!</strong> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
     <div class="container py-4">
         <h1 class="text-center mb-4" style="font-family: 'Poppins', sans-serif;">Quản lý Hồ Sơ Bệnh Án</h1>
@@ -413,6 +427,16 @@
         margin: 20px 0;
         border-top: 1px solid #0056b3;
     }
+
+    .alert {
+        text-align: center;
+        width: 100%;
+        margin: 20px auto;
+        /* Căn giữa theo chiều ngang */
+        padding: 15px;
+        font-size: 18px;
+    }
+
 
     /* Responsive */
     @media (max-width: 768px) {

@@ -83,6 +83,7 @@ class InvoiceController extends Controller
         }
 
         return redirect()->route('admindoctor.invoices.create', ['medical_record_id' => $medicalRecord->id])
+            ->with('success', 'Hóa đơn đã được tạo thành công!');
         ;
     }
 

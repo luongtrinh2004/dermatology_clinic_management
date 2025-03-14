@@ -20,7 +20,7 @@
         <div class="py-3" style="background-color: #e0f7fa; border-bottom: 1px solid #ccc;">
             <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="d-flex align-items-center">
+                <a href="{{ url('/admindoctor/dashboard') }}" class="d-flex align-items-center">
                     <img src="/img/logo.webp" alt="Logo" style="height: 50px;">
                 </a>
 
@@ -265,6 +265,17 @@
             font-family: 'Poppins', sans-serif;
             padding: 40px 10%;
         }
+
+
+        .alert {
+            text-align: center;
+            width: 100%;
+            margin: 20px auto;
+            /* Căn giữa theo chiều ngang */
+            padding: 15px;
+            font-size: 18px;
+        }
+
 
         .footer-col {
             display: flex;

@@ -20,7 +20,7 @@
         <div class="py-3" style="background-color: #e0f7fa; border-bottom: 1px solid #ccc;">
             <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="d-flex align-items-center">
+                <a href="{{ url('/admindoctor/dashboard') }}" class="d-flex align-items-center">
                     <img src="/img/logo.webp" alt="Logo" style="height: 50px;">
                 </a>
 
@@ -59,6 +59,10 @@
             </div>
         </div>
     </header>
+
+
+
+
 
     <div class="container py-4">
         <h1 class="text-center mb-4">Quản lý Hồ Sơ Bệnh Án</h1>

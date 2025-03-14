@@ -18,7 +18,7 @@
         <div class="py-3" style="background-color: #e0f7fa; border-bottom: 1px solid #ccc;">
             <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <!-- Logo -->
-                <a href="{{ url('/') }}" class="d-flex align-items-center">
+                <a href="{{ url('/admin/dashboard') }}" class="d-flex align-items-center">
                     <img src="/img/logo.webp" alt="Logo" style="height: 50px;">
                 </a>
 
@@ -31,7 +31,8 @@
                 </div>
 
                 <!-- Actions -->
-                <a href="/appointments/create" class="btn btn-primary btn-sm rounded-pill px-3" style="background-color: #007bff; border-color: #007bff;">Đặt lịch khám</a>
+                <a href="/appointments/create" class="btn btn-primary btn-sm rounded-pill px-3"
+                    style="background-color: #007bff; border-color: #007bff;">Đặt lịch khám</a>
                 <a href="#" class="btn btn-info btn-sm rounded-pill px-3" style="color: white;">1900 886648</a>
                 <a href="#" class="btn btn-warning btn-sm rounded-pill px-3" style="color: white;">Hướng dẫn khách
                     hàng</a>
@@ -44,7 +45,8 @@
 
                 <!-- Language Dropdown -->
                 <div class="dropdown">
-                    <button class="btn btn-light btn-sm rounded-circle dropdown-toggle" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light btn-sm rounded-circle dropdown-toggle" id="languageDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="/img/vietnam.png" alt="VN" style="height: 20px;"> <!-- Icon cờ -->
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="languageDropdown">
@@ -63,7 +65,8 @@
     <div class="container py-4">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1 class="mb-4" style="font-family: 'Poppins', sans-serif; font-size: 36px; color: #0056b3; font-weight: 700;">
+                <h1 class="mb-4"
+                    style="font-family: 'Poppins', sans-serif; font-size: 36px; color: #0056b3; font-weight: 700;">
                     Welcome Admin!
                 </h1>
             </div>
@@ -116,7 +119,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Lịch Làm Việc</h5>
+                        <h5 class="card-title">Quản Lý Lịch Làm Việc</h5>
                         <a href="{{ url('/admin/workingschedule') }}" class="btn btn-primary">Xem chi tiết</a>
                     </div>
                 </div>
@@ -143,7 +146,8 @@
                     <p><strong>Bệnh viện Đại Học Phenikaa</strong></p>
                     <p>📍 Đường Kiều Mai, P. Phương Canh, Nam Từ Liêm, Hà Nội</p>
                     <p>📜 Giấy phép hoạt động số 386/BYT</p>
-                    <p>📞 Hotline: <a href="tel:1900886648">1900.88.66.48</a> - <a href="tel:02422226688">02422226688</a></p>
+                    <p>📞 Hotline: <a href="tel:1900886648">1900.88.66.48</a> - <a
+                            href="tel:02422226688">02422226688</a></p>
                     <p>📧 Email: <a href="mailto:support@phenikaamec.com">support@phenikaamec.com</a></p>
                 </div>
 
