@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\PatientController;
-
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ChatbotController;
@@ -15,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorMedicalRecordController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AdminInvoiceController;
-
-
 
 // Trang chủ
 Route::get('/', function () {
@@ -32,14 +31,15 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
-    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
-    Route::get('/appointments/search', [AppointmentController::class, 'searchAppointments'])->name('appointments.search');
+// route Quên mật khẩu
+Route::get('password/direct-reset', [\App\Http\Controllers\Auth\DirectResetController::class, 'showResetForm'])
+    ->name('password.direct');
 
+Route::post('password/direct-reset', [\App\Http\Controllers\Auth\DirectResetController::class, 'reset'])
+    ->name('password.direct.update');
 
-});
-
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
 // Routes cho Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -52,7 +52,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/doctors/{id}/edit', [AdminController::class, 'editDoctor'])->name('admin.doctors.edit');
     Route::post('/admin/doctors/{id}/update', [AdminController::class, 'updateDoctor'])->name('admin.doctors.update');
     Route::delete('/admin/doctors/{id}', [AdminController::class, 'destroyDoctor'])->name('admin.doctors.destroy');
-
 
     // Admin quản lý lịch khám (có thể duyệt, từ chối)
     Route::get('/admin/appointments', [AdminController::class, 'showAppointments'])->name('admin.appointments.index');
@@ -87,7 +86,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
-
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/dashboard', function () {
         return view('role.admindoctor');
@@ -118,7 +116,6 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
         Route::resource('admindoctor/invoices', InvoiceController::class);
     });
 });
-
 
 // Routes cho AdminDoctor (Xem lịch nhưng không chỉnh sửa)
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {
@@ -200,6 +197,3 @@ Route::prefix('admin/invoices')->group(function () {
     Route::put('/admin/invoices/{id}', [AdminInvoiceController::class, 'update'])->name('admin.invoices.update');
     Route::delete('/{id}', [AdminInvoiceController::class, 'destroy'])->name('admin.invoices.destroy');
 });
-
-
-Route::get('/getDoctorScheduleWithFutureDates/{doctor}', [AdminController::class, 'getDoctorScheduleWithFutureDates']);
