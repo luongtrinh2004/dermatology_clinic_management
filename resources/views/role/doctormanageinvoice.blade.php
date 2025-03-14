@@ -168,6 +168,12 @@
                                 <td>{{ $invoice->status }}</td>
                                 <td>{{ $invoice->medical_record_id }}</td>
                                 <td>
+
+                                    <!-- Nút In Hóa Đơn -->
+                                    <a href="{{ route('admindoctor.invoices.print', $invoice->id) }}"
+                                        class="btn btn-secondary btn-sm" target="_blank">
+                                        <i class="bi bi-printer"></i> In
+                                    </a>
                                     <!-- Nút Xóa -->
                                     <form action="{{ route('admindoctor.invoices.destroy', $invoice->id) }}" method="POST"
                                         onsubmit="return confirm('Bạn có chắc muốn xóa hóa đơn này?');">

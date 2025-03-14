@@ -123,4 +123,13 @@ class InvoiceController extends Controller
         return redirect()->back();
     }
 
+
+
+    public function print($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        return view('role.printinvoice', compact('invoice'));
+    }
+
+
 }
