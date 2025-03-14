@@ -15,6 +15,13 @@
             <label for="password" class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
+
+        <div class="mb-3 text-end">
+            <a href="{{ route('password.direct') }}">
+                Quên mật khẩu?
+            </a>
+        </div>
+
         <button type="submit" class="btn btn-primary">Đăng nhập</button>
     </form>
 </div>
