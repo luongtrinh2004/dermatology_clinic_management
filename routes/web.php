@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorMedicalRecordController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AdminInvoiceController;
+use App\Http\Controllers\SearchController;
 
 
 
@@ -31,6 +32,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
