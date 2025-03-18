@@ -170,20 +170,22 @@
         </div>
     </nav>
 
-    <div class="container py-4">
-        <h1 class="text-center mb-4">Lịch Làm Việc</h1>
 
-        <!-- Lich lam viec -->
+
+
+    <div class="container py-4">
+        <h1 class="text-center mb-4"> Lịch Làm Việc Theo Chuyên Môn</h1>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Tên</th>
                         <th>Chuyên môn</th>
-                        <th>Số điện thoại</th>
+                        <th>Bác sĩ</th>
+                        <th>Điện thoại</th>
                         <th>Ảnh</th>
-                        <th class="text-center" colspan="7">Lịch Trực Trong Tuần</th>
+                        <th colspan="7" class="text-center"><i class="bi bi-calendar3"></i> Lịch Trực Trong Tuần</th>
                     </tr>
                     <tr>
                         <th colspan="5"></th>
@@ -197,48 +199,87 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($doctors as $doctor)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $doctor->name }}</td>
-                                            <td>{{ $doctor->specialty }}</td>
-                                            <td>{{ $doctor->phone }}</td>
-                                            <td>
-                                                @if($doctor->image)
-                                                    <img src="{{ asset($doctor->image) }}" class="img-thumbnail" style="max-width: 50px;">
-                                                @else
-                                                    <span>Không có ảnh</span>
-                                                @endif
-                                            </td>
-                                            @php
-                                                $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                                $working_hours = collect($doctor->working_hours);
-                                            @endphp
+                    @foreach($specialtyGroups as $specialty => $doctorspecialty)
+                                        @php
+                                            $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                            $shiftLabels = ['morning' => '08:00 - 12:00', 'afternoon' => '14:00 - 18:00'];
+                                            $specialtyShiftEmpty = [];
 
-                                            @foreach($weekdays as $day)
-                                                                <td>
-                                                                    @php
-                                                                        $shifts = $working_hours->where('day', $day)->pluck('shift')->toArray();
-                                                                    @endphp
-                                                                    @if(!empty($shifts))
-                                                                        @foreach($shifts as $shift)
-                                                                            <span class="badge bg-success" style="font-size: medium;">
-                                                                                {{ $shift == 'morning' ? '08:00 - 12:00' : '14:00 - 18:00' }}
-                                                                            </span><br>
-                                                                        @endforeach
-                                                                    @else
-                                                                        <span class="text-danger">Nghỉ</span>
-                                                                    @endif
-                                                                </td>
-                                            @endforeach
+                                            // Khởi tạo trạng thái kiểm tra ca làm việc của từng chuyên môn
+                                            foreach ($weekdays as $day) {
+                                                $specialtyShiftEmpty[$day] = ['morning' => true, 'afternoon' => true];
+                                            }
+                                        @endphp
+
+                                        <tr class="table-primary text-center">
+                                            <td colspan="13"><strong><i class="bi bi-stethoscope"></i> {{ $specialty }}</strong></td>
                                         </tr>
+
+                                        @foreach($doctorspecialty as $doctor)
+                                                        <tr>
+                                                            <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
+                                                            <td>{{ $doctor->specialty }}</td>
+                                                            <td>{{ $doctor->name }}</td>
+                                                            <td>{{ $doctor->phone }}</td>
+                                                            <td>
+                                                                @if($doctor->image)
+                                                                    <img src="{{ asset($doctor->image) }}" class="img-thumbnail" style="max-width: 50px;">
+                                                                @else
+                                                                    <span>Không có ảnh</span>
+                                                                @endif
+                                                            </td>
+
+                                                            @php
+                                                                $working_hours = $doctor->working_hours ?? [];
+                                                            @endphp
+
+                                                            @foreach($weekdays as $day)
+                                                                            <td>
+                                                                                @php
+                                                                                    $shifts = collect($working_hours)->where('day', $day)->pluck('shift')->toArray();
+                                                                                @endphp
+                                                                                @if(!empty($shifts))
+                                                                                                @foreach($shifts as $shift)
+                                                                                                    <span class="badge" style="background-color: {{ $shift == 'morning' ? '#2A95BF' : '#FFD700' }};
+                                                                                                                 color: {{ $shift == 'morning' ? 'white' : 'black' }};">
+                                                                                                        {{ $shiftLabels[$shift] }}
+                                                                                                    </span><br>
+                                                                                                @endforeach
+                                                                                                @php
+                                                                                                    // Nếu có bác sĩ trực ca nào thì đánh dấu ca đó không trống
+                                                                                                    foreach ($shifts as $shift) {
+                                                                                                        $specialtyShiftEmpty[$day][$shift] = false;
+                                                                                                    }
+                                                                                                @endphp
+                                                                                @else
+                                                                                    <span class="text-danger">Nghỉ</span>
+                                                                                @endif
+                                                                            </td>
+                                                            @endforeach
+                                                        </tr>
+                                        @endforeach
+
+                                        {{-- Hiển thị cảnh báo ca trống cho từng chuyên môn --}}
+                                        @foreach($specialtyShiftEmpty as $day => $shifts)
+                                            @foreach($shifts as $shift => $isEmpty)
+                                                @if($isEmpty && $day != 'Sunday') {{-- Không cảnh báo nếu là Chủ Nhật --}}
+                                                    <tr class="bg-warning text-center">
+                                                        <td colspan="13" class="text-danger">
+                                                            ⚠️ Chuyên môn "{{ $specialty }}" không có bác sĩ trực vào
+                                                            **{{ __("Thứ " . (array_search($day, $weekdays) + 2)) }} - {{ $shiftLabels[$shift] }}**!
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
                     @endforeach
+
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="container py-5">
-        <h2 class="text-center mb-4" style="font-weight: 700; color: #0056b3;">🗓 Chỉnh Sửa Lịch Làm Việc</h2>
+    <div class="container py-5" id="loaddoctor">
+        <h2 class="text-center mb-4" style="font-weight: 700; color: #0056b3;">Chỉnh Sửa Lịch Làm Việc</h2>
 
         <!-- Chọn bác sĩ -->
         <div class="mb-4">
@@ -252,6 +293,7 @@
                 @endforeach
             </select>
         </div>
+
 
         @if(isset($selectedDoctor))
                 <!-- Thông tin bác sĩ -->
@@ -267,7 +309,7 @@
                 </div>
 
                 <!-- Form chỉnh sửa lịch làm việc -->
-                <form method="POST" action="{{ route('admin.updateSchedule', $selectedDoctor->id) }}">
+                <form method="POST" action="{{ route('admin.updateSchedule', $selectedDoctor->id) }}" id="updateScheduleForm">
                     @csrf
                     <div class="card shadow-sm">
                         <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
@@ -353,9 +395,20 @@
         function loadDoctorSchedule() {
             let doctorId = document.getElementById('doctorSelect').value;
             if (doctorId) {
+                localStorage.setItem("scrollToForm", "true");
                 window.location.href = `?doctor_id=${doctorId}`;
             }
         }
+        window.onload = function () {
+            if (localStorage.getItem("scrollToForm") === "true") {
+                setTimeout(() => {
+                    document.getElementById('loaddoctor').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    localStorage.removeItem("scrollToForm"); // Xóa trạng thái để tránh cuộn lại khi không cần
+                }, 500);
+            }
+        };
     </script>
     <footer class="footer">
         <div class="container">

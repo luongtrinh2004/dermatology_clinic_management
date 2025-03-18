@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTotalAmountToInvoicesTable extends Migration
+class AddServicesMedicinesToInvoices extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,23 @@ class AddTotalAmountToInvoicesTable extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->decimal('total_amount', 10, 2)->after('some_column')->default(0);
+            $table->text('services_medicines')
+                ->charset('utf8mb4')
+                ->collation('utf8mb4_unicode_ci')
+                ->nullable()
+                ->after('total_amount');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn('total_amount');
+            $table->dropColumn('services_medicines');
         });
     }
-
 }

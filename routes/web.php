@@ -19,6 +19,7 @@ use App\Http\Controllers\SearchController;
 
 
 
+
 // Trang chủ
 Route::get('/', function () {
     return view('home'); // Trang Home
@@ -31,15 +32,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
 
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::middleware(['auth'])->group(function () {
-    Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
-    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
     Route::get('/appointments/search', [AppointmentController::class, 'searchAppointments'])->name('appointments.search');
-
-
 });
 
 
@@ -80,12 +80,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Đảm bảo route này chỉ hiển thị danh sách dịch vụ cho người dùng
     Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
     // Xem lịch làm việc của bác sĩ
-    Route::get('/admin/workingschedule', [AdminController::class, 'showshift'])->name('admin.showshift');
     Route::get('/admin/workingschedule', [AdminController::class, 'showshift'])->name('admin.workingschedule');
     Route::post('/admin/workingschedule/{doctor}', [AdminController::class, 'updateSchedule'])->name('admin.updateSchedule');
-
-
-
 });
 
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
@@ -119,7 +115,6 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
         Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
         Route::resource('admindoctor/invoices', InvoiceController::class);
         Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
-
     });
 });
 

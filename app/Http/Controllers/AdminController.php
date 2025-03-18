@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Doctor;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Appointment;
 use App\Models\User;
 use Carbon\Carbon;
@@ -42,6 +43,9 @@ class AdminController extends Controller
             'phone' => 'required|string',
             'bio' => 'nullable|string',
             'image' => 'nullable|file|max:5120|mimes:jpeg,png,jpg,gif', // Giống như dịch vụ
+            'working_hours' => 'nullable|array', // Cho phép lịch làm việc rỗng
+            'working_hours.*.day' => 'required_with:working_hours|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'working_hours.*.shift' => 'required_with:working_hours|in:morning,afternoon',
         ]);
 
         if ($request->hasFile('image')) {
@@ -57,14 +61,12 @@ class AdminController extends Controller
         $doctor = Doctor::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'specialty' => $request->specialty,
             'phone' => $request->phone,
             'bio' => $request->bio,
             'image' => $filePath,
-            'working_hours' => 'required|array',
-            'working_hours.*.day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-            'working_hours.*.shift' => 'required|in:morning,afternoon'
+            'working_hours' => $request->working_hours,
         ]);
 
         // Thêm tài khoản vào bảng users
@@ -73,7 +75,6 @@ class AdminController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => 'admindoctor',
-            'working_hours' => $request->working_hours,
         ]);
 
         return redirect()->route('admin.doctors.index')
@@ -112,16 +113,30 @@ class AdminController extends Controller
             $doctor->image = 'img/' . $imageName;
         }
 
-        // Cập nhật thông tin bác sĩ
-        $doctor->update([
+
+        $updateData = [
             'name' => $request->name,
             'email' => $request->email,
             'specialty' => $request->specialty,
             'phone' => $request->phone,
             'bio' => $request->bio,
             'working_hours' => $request->filled('working_hours') ? $request->working_hours : null,
-        ]);
+        ];
 
+        // Nếu có nhập mật khẩu mới, cập nhật mật khẩu
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
+
+        // Cập nhật bác sĩ
+        $doctor->update($updateData);
+
+        // Nếu có bảng `users` liên kết với bác sĩ, cập nhật cả tài khoản user
+        User::where('email', $doctor->email)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $doctor->password,
+        ]);
 
         // Chuyển hướng về danh sách bác sĩ kèm thông báo
         return redirect()->route('admin.doctors.index')->with('success', 'Thông tin bác sĩ đã được cập nhật.');
@@ -359,18 +374,21 @@ class AdminController extends Controller
     }
     public function showshift(Request $request)
     {
+        // Lấy tất cả bác sĩ
         $doctors = Doctor::all(['id', 'name', 'specialty', 'phone', 'image', 'working_hours']);
-        $selectedDoctor = null;
 
+        // Nhóm theo chuyên môn để hiển thị
+        $specialtyGroups = $doctors->groupBy('specialty');
+
+        // Xác định bác sĩ được chọn để sửa lịch
+        $selectedDoctor = null;
         if ($request->has('doctor_id')) {
             $selectedDoctor = Doctor::find($request->doctor_id);
-            if ($selectedDoctor && is_string($selectedDoctor->working_hours)) {
-                $selectedDoctor->working_hours = json_decode($selectedDoctor->working_hours, true) ?? [];
-            }
         }
 
-        return view('role.workingschedule', compact('doctors', 'selectedDoctor'));
+        return view('role.workingschedule', compact('doctors', 'selectedDoctor', 'specialtyGroups'));
     }
+
 
     public function updateSchedule(Request $request, $id)
     {
