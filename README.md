@@ -47,32 +47,22 @@
 ### 📌 1. Clone repository
 
 ```sh
-git clone https://github.com/luongtrinh2004/Quan_Ly_Phong_Kham_Da_Lieu
+git clone https://github.com/luongtrinh2004/dermatology_clinic_management
 cd ...
 ```
 
-### 📌 2. Cấu hình môi trường
-
-```sh
-cp .env.example .env
-php artisan key:generate
-```
-
-🎡 Cập nhật file `.env` với thông tin database của bạn.
-
-### 📌 3. Cài đặt các dependencies
+### 📌 2. Cài đặt các dependencies
 
 ```sh
 composer install
 
 ```
 
-### 📌 4. Tạo database từ file laravel_backup.sql
+### 📌 3. Cấu hình môi trường
 
 ```sh
-
-mysql -u root -p ten_database < laravel_backup.sql
-
+cp .env.example .env
+php artisan key:generate
 ```
 
 ### 📌 4. Cập nhật file .env với thông tin database của bạn:
@@ -86,6 +76,17 @@ DB_DATABASE=ten_database
 DB_USERNAME=root
 DB_PASSWORD=your_password
 
+```
+
+🎡 Cập nhật file `.env` với thông tin database của bạn.
+
+### 📌 4. Tạo database từ file laravel_backup.sql
+
+**Tạo database "ten_database" trong MySQL**
+
+```sh
+
+mysql -u root -p ten_database < "Đường dẫn lưu thư mục dự án/laravel_backup.sql"
 
 ```
 
