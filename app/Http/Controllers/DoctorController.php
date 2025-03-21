@@ -132,6 +132,18 @@ class DoctorController extends Controller
         }
     }
 
+    public function search_doctors_list(Request $request)
+    {
+        $query = $request->input('query');
+
+        $doctors = Doctor::where('name', 'like', '%' . $query . '%')
+            ->orWhere('specialty', 'like', '%' . $query . '%')
+            ->get();
+
+        return view('doctors', compact('doctors'));
+    }
+
+
     public function showPatients()
     {
         $patients = Appointment::where('doctor_id', Auth::id()) // Chỉ lấy bệnh nhân của doctor hiện tại

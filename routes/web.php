@@ -34,6 +34,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
+Route::get('/doctors/search-list', [DoctorController::class, 'search_doctors_list'])->name('doctors.search_list');
 
 Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
@@ -147,7 +148,7 @@ Route::get('/contact', function () {
 
 // Home Route sau khi đăng nhập
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
-
+Route::get('/get-working-hours', [AdminController::class, 'getWorkingHours']);
 // Routes đặt lịch khám
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/appointments', [AdminController::class, 'showAppointments'])->name('admin.appointments.index');
@@ -161,7 +162,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth', 'role:admindoctor'])->group(function () {
         Route::get('/admindoctor/dashboard', [DoctorController::class, 'showDashboard'])->name('admindoctor.dashboard');
     });
-    Route::get('/get-working-hours', [AdminController::class, 'getWorkingHours']);
+
 
     // Doctor xem lịch khám ngay khi bệnh nhân đặt (không cần Admin duyệt)
     Route::middleware(['role:admindoctor'])->group(function () {
