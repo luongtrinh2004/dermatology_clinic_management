@@ -80,7 +80,7 @@ DB_PASSWORD=your_password
 
 🎡 Cập nhật file `.env` với thông tin database của bạn.
 
-### 📌 4. Tạo database từ file laravel_backup.sql
+### 📌 5. Tạo database từ file laravel_backup.sql
 
 **Tạo database "ten_database" trong MySQL**
 
@@ -90,7 +90,7 @@ mysql -u root -p ten_database < "Đường dẫn lưu thư mục dự án/larave
 
 ```
 
-### 📌 5. Chạy ứng dụng
+### 📌 6. Chạy ứng dụng
 
 ```sh
 php artisan serve
