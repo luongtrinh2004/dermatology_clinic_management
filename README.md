@@ -170,6 +170,6 @@ https://github.com/luongtrinh2004/dermatology_clinic_management
 ### 🔹 Link demo
 
 ```sh
-.................
+http://3.25.108.43/
 
 ```
