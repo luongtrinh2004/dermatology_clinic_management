@@ -128,10 +128,37 @@ php artisan serve
 
 ### 🔹 Deploy Dự Án
 
+1. Deploy với Ngrok
+
 ```sh
 https://31c4-118-70-185-2.ngrok-free.app
 
 ```
+
+2. Deploy với Docker
+
+- Yêu cầu: Đã cài đặt Docker Engine và Docker Compose
+
+- Kiểm tra cài đặt bằng lệnh:
+
+```sh
+
+docker --version
+docker-compose --version
+
+```
+
+- Cập nhật thông tin database trong file .env theo thông tin database ghi trong mục **services** trong file **docker-compose.yml**
+
+- Chạy lệnh:
+
+```sh
+
+docker-compose up --build -d
+
+```
+
+- Truy cập địa chỉ `http://localhost` 
 
 ### 🔹 Link repo
 
