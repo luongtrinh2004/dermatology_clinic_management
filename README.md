@@ -163,7 +163,7 @@ docker-compose up --build -d
 ### 🔹 Link repo
 
 ```sh
-https://github.com/luongtrinh2004/Quan_Ly_Phong_Kham_Da_Lieu
+https://github.com/luongtrinh2004/dermatology_clinic_management
 
 ```
 
