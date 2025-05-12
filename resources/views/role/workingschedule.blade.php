@@ -142,33 +142,7 @@
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg" style="background-color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-weight: 500; margin: 0 10px;">Home</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/about') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-weight: 500; margin: 0 10px;">About
-                            Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-weight: 500; margin: 0 10px;">Services</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-weight: 500; margin: 0 10px;">Contact</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/doctors') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-weight: 500; margin: 0 10px;">Doctors</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
 
 
 
@@ -240,8 +214,9 @@
                                                                                 @endphp
                                                                                 @if(!empty($shifts))
                                                                                                 @foreach($shifts as $shift)
-                                                                                                    <span class="badge" style="background-color: {{ $shift == 'morning' ? '#2A95BF' : '#FFD700' }};
-                                                                                                                 color: {{ $shift == 'morning' ? 'white' : 'black' }};">
+                                                                                                    <span class="badge"
+                                                                                                        style="background-color: {{ $shift == 'morning' ? '#2A95BF' : '#FFD700' }};
+                                                                                                                                                                                         color: {{ $shift == 'morning' ? 'white' : 'black' }};">
                                                                                                         {{ $shiftLabels[$shift] }}
                                                                                                     </span><br>
                                                                                                 @endforeach

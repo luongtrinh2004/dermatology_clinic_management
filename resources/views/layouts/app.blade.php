@@ -68,20 +68,19 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; margin: 0 10px;">Home</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; 
+                            margin: 0 10px;">Trang Chủ</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/about') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; margin: 0 10px;">About
-                            Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; margin: 0 10px;">Services</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/about') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
+                             margin: 0 10px;">Thông Tin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; 
+                            margin: 0 10px;">Dịch Vụ</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; margin: 0 10px;">Contact</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
+                            margin: 0 10px;">Liên Lạc</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/doctors') }}"
-                            style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; margin: 0 10px;">Doctors</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/doctors') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
+                             margin: 0 10px;">Bác Sĩ</a>
                     </li>
                 </ul>
             </div>
@@ -253,6 +252,29 @@
     <style>
         /* Font chữ từ Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+
+        .nav-link {
+            font-family: Arial, sans-serif !important;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0056b3;
+            margin: 0 10px;
+        }
+
+
+
+        /* Hiệu ứng hover: sáng lên */
+        nav a:hover {
+            background-color: rgba(0, 115, 230, 0.1);
+            /* Nền sáng nhẹ */
+            color: #0073e6;
+            /* Đổi màu chữ */
+            transform: scale(1.05);
+            /* Phóng to nhẹ */
+        }
+
+
 
         /* Footer Styles */
         .footer {
