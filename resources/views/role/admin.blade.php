@@ -124,6 +124,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Quản Lý Kho Thuốc</h5>
+                        <a href="{{ url('/admin/medicines') }}" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body text-center">
@@ -132,6 +141,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <footer class="footer">

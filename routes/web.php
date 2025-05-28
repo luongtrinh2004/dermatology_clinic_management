@@ -16,6 +16,7 @@ use App\Http\Controllers\DoctorMedicalRecordController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AdminInvoiceController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\MedicineController;
 
 
 
@@ -36,6 +37,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
 Route::get('/doctors/search-list', [DoctorController::class, 'search_doctors_list'])->name('doctors.search_list');
 
+Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
 Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::middleware(['auth'])->group(function () {
@@ -83,6 +85,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Xem lịch làm việc của bác sĩ
     Route::get('/admin/workingschedule', [AdminController::class, 'showshift'])->name('admin.workingschedule');
     Route::post('/admin/workingschedule/{doctor}', [AdminController::class, 'updateSchedule'])->name('admin.updateSchedule');
+
+    // quản lý thuốc
+
+    Route::get('/admin/medicines', [MedicineController::class, 'adminIndex'])->name('admin.medicines.index');
+    Route::post('/admin/medicines', [MedicineController::class, 'store'])->name('admin.medicines.store');
+    Route::post('/admin/medicines/{id}', [MedicineController::class, 'update'])->name('admin.medicines.update');
+    Route::delete('/admin/medicines/{id}', [MedicineController::class, 'destroy'])->name('admin.medicines.destroy');
 });
 
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
@@ -189,6 +198,7 @@ Route::post('/chatbot/send', [ChatbotController::class, 'sendMessage'])->name('c
 Route::prefix('admindoctor')->name('admindoctor.')->group(function () {
     Route::resource('invoices', InvoiceController::class);
 });
+
 
 Route::prefix('admin/invoices')->group(function () {
     Route::get('/', [AdminInvoiceController::class, 'index'])->name('admin.invoices.index');
