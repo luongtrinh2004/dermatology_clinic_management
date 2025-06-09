@@ -17,6 +17,8 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AdminInvoiceController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\SpaController;
+use App\Http\Controllers\SpaAppointmentController;
 
 
 
@@ -36,6 +38,11 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
 Route::get('/doctors/search-list', [DoctorController::class, 'search_doctors_list'])->name('doctors.search_list');
+
+Route::get('/spa', [SpaController::class, 'index'])->name('spa.index');
+// Đúng route cho "Đặt lịch"
+Route::get('/spa/appointments/create/{service_id?}', [SpaAppointmentController::class, 'create'])
+    ->name('spa.appointment');
 
 Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
 Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
@@ -93,6 +100,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/medicines/{id}', [MedicineController::class, 'update'])->name('admin.medicines.update');
     Route::delete('/admin/medicines/{id}', [MedicineController::class, 'destroy'])->name('admin.medicines.destroy');
 });
+
+
+Route::prefix('spa/appointments')->group(function () {
+    Route::get('/', [SpaAppointmentController::class, 'index'])->name('spa.appointments.index');
+    Route::get('/create', [SpaAppointmentController::class, 'create'])->name('spa.appointments.create');
+    Route::post('/store', [SpaAppointmentController::class, 'store'])->name('spa.appointments.store');
+});
+
+
 
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
 
