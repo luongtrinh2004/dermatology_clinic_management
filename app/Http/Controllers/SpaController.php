@@ -23,4 +23,10 @@ class SpaController extends Controller
         $service = SpaServices::findOrFail($id);
         return view('spa.book', compact('service'));
     }
+    public function show($id)
+    {
+        $service = SpaServices::findOrFail($id);
+        return view('spa.service-detail', compact('service'));
+    }
+
 }

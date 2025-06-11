@@ -51,7 +51,7 @@
 
             <div class="text-center">
                 <button type="submit" class="btn btn-success">Xác nhận đặt lịch</button>
-                <a href="{{ route('spa.appointments.index') }}" class="btn btn-secondary">Quản lý lịch hẹn</a>
+
             </div>
         </form>
     </div>

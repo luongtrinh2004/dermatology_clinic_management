@@ -157,6 +157,44 @@
             display: none;
         }
 
+        .service-buttons {
+            margin-top: 10px;
+        }
+
+        .service-buttons a {
+            display: inline-block;
+            background-color: #4a9c9f;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .service-buttons a:hover {
+            background-color: #3b7f82;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .service-buttons a i {
+            margin-right: 6px;
+        }
+
+        .service-buttons .btn-outline-secondary {
+            background-color: transparent;
+            color: #4a9c9f;
+            border: 1px solid #4a9c9f;
+        }
+
+        .service-buttons .btn-outline-secondary:hover {
+            background-color: #4a9c9f;
+            color: white;
+        }
+
         .floating-buttons {
             position: fixed;
             top: 35%;
@@ -222,11 +260,6 @@
                 với con người.</p>
         </div>
     </div>
-    @if(session('success'))
-        <div class="alert alert-success text-center" style="font-size: 18px;">
-            {{ session('success') }}
-        </div>
-    @endif
 
     {{-- Dịch vụ --}}
     <div class="spa-box">
@@ -246,10 +279,14 @@
                             <div class="service-body">
                                 <p>{{ $service->description }}</p>
                                 <div class="service-buttons">
-                                    <a href="{{ route('spa.appointment', $service->id) }}">Đặt lịch</a>
+                                    <a href="{{ route('spa.appointment', $service->id) }}">
+                                        <i class="fas fa-calendar-check"></i> Đặt lịch
+                                    </a>
+                                    <a href="{{ route('spa.service.show', $service->id) }}"
+                                        class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-info-circle"></i> Chi tiết
+                                    </a>
 
-                                    <a href="{{ route('spa.appointment', $service->id) }}"
-                                        class="btn btn-outline-secondary btn-sm">Chi tiết</a>
                                 </div>
                             </div>
                         </div>

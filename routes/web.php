@@ -38,6 +38,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
 Route::get('/doctors/search-list', [DoctorController::class, 'search_doctors_list'])->name('doctors.search_list');
+Route::get('/spa/service/{id}', [SpaController::class, 'show'])->name('spa.service.show');
 
 Route::get('/spa', [SpaController::class, 'index'])->name('spa.index');
 // Đúng route cho "Đặt lịch"
@@ -102,10 +103,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 
-Route::prefix('spa/appointments')->group(function () {
-    Route::get('/', [SpaAppointmentController::class, 'index'])->name('spa.appointments.index');
-    Route::get('/create', [SpaAppointmentController::class, 'create'])->name('spa.appointments.create');
-    Route::post('/store', [SpaAppointmentController::class, 'store'])->name('spa.appointments.store');
+Route::prefix('spa/appointments')->name('spa.appointments.')->group(function () {
+    Route::get('/', [SpaAppointmentController::class, 'index'])->name('index');
+    Route::post('/', [SpaAppointmentController::class, 'store'])->name('store');
+    Route::put('/{id}', [SpaAppointmentController::class, 'update'])->name('update');
+    Route::delete('/{id}', [SpaAppointmentController::class, 'destroy'])->name('destroy');
 });
 
 
