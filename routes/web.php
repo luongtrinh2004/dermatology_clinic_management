@@ -19,6 +19,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\SpaController;
 use App\Http\Controllers\SpaAppointmentController;
+use App\Http\Controllers\AdminSpaServiceController;
 
 
 
@@ -100,6 +101,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/medicines', [MedicineController::class, 'store'])->name('admin.medicines.store');
     Route::post('/admin/medicines/{id}', [MedicineController::class, 'update'])->name('admin.medicines.update');
     Route::delete('/admin/medicines/{id}', [MedicineController::class, 'destroy'])->name('admin.medicines.destroy');
+
+    // quản lý dịch vụ spa
+
+    Route::get('/admin/managespaservices', [AdminSpaServiceController::class, 'index'])->name('admin.managespaservices');
+    Route::get('/admin/managespaservices/create', [AdminSpaServiceController::class, 'create'])->name('admin.managespaservices.create');
+    Route::post('/admin/managespaservices/store', [AdminSpaServiceController::class, 'store'])->name('admin.managespaservices.store');
+    //Route::get('/admin/managespaservices/{id}/edit', [AdminSpaServiceController::class, 'edit'])->name('admin.managespaservices.edit');
+    Route::post('/admin/managespaservices/{id}/update', [AdminSpaServiceController::class, 'update'])->name('admin.managespaservices.update');
+    Route::delete('/admin/managespaservices/{id}', [AdminSpaServiceController::class, 'destroy'])->name('admin.managespaservices.destroy');
+
 });
 
 
