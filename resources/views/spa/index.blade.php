@@ -253,8 +253,8 @@
     <div class="intro-section">
         <img src="{{ asset('img/lamspa.png') }}" alt="Lam Spa" />
         <div class="intro-text">
-            <h2>Câu Chuyện Nhà Lam</h2>
-            <p>Thành lập năm 2019, Lam Spa khởi đầu câu chuyện của mình nằm ở một góc yên tĩnh, dưới những tán cây xanh
+            <h2>Câu Chuyện Nhà PhenikaaMEC</h2>
+            <p>Thành lập năm 2019, PhenikaaMEC khởi đầu câu chuyện của mình nằm ở một góc yên tĩnh, dưới những tán cây xanh
                 trong khu vực nhộn nhịp của Phú Nhuận...</p>
             <p>Chúng tôi luôn hướng đến sự kết nối giữa ngoại tại và nội tại của mỗi bản thân, và sự kết nối giữa con người
                 với con người.</p>

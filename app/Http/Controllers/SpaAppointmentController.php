@@ -32,13 +32,14 @@ class SpaAppointmentController extends Controller
         return view('role.managespaappointments', compact('appointments', 'services', 'editAppointment', 'search'));
     }
 
-    // Trang tạo riêng nếu có (không cần nếu tạo ngay trong index)
+    // Trang tạo lịch hẹn (dành cho khách hoặc admin)
     public function create($service_id = null)
     {
         $services = SpaServices::all();
         return view('spa.appointmentcreate', compact('services', 'service_id'));
     }
 
+    // Lưu lịch hẹn mới
     public function store(Request $request)
     {
         $request->validate([
@@ -52,9 +53,15 @@ class SpaAppointmentController extends Controller
 
         SpaAppointment::create($request->all());
 
-        return redirect()->route('spa.appointments.index')->with('success', 'Đặt lịch thành công!');
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('spa.appointments.index')->with('success', 'Đặt lịch thành công!');
+        }
+
+        return redirect()->route('spa.index')->with('success', 'Đặt lịch thành công!');
     }
 
+
+    // Cập nhật lịch hẹn
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -72,6 +79,7 @@ class SpaAppointmentController extends Controller
         return redirect()->route('spa.appointments.index')->with('success', 'Cập nhật lịch hẹn thành công!');
     }
 
+    // Xóa lịch hẹn
     public function destroy($id)
     {
         $appointment = SpaAppointment::findOrFail($id);
