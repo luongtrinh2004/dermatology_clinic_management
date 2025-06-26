@@ -230,8 +230,9 @@
                                 )
                                 <div class="service-block">
                                     <div class="service-title" onclick="toggleService(this)">
-                                        {{ $service->name }}
+                                        {{ $service->name }} - <strong>{{ number_format($service->price, 0, ',', '.') }}₫</strong>
                                     </div>
+
                                     <div class="service-body">
                                         <p>{{ $service->description }}</p>
                                         <div class="service-buttons">
@@ -265,11 +266,14 @@
                 <input type="text" name="name" id="editName" class="form-control mb-2" placeholder="Tên dịch vụ" required>
                 <textarea name="description" id="editDescription" class="form-control mb-2" rows="4"
                     placeholder="Mô tả"></textarea>
+                <input type="number" name="price" id="editPrice" class="form-control mb-2" placeholder="Giá dịch vụ (VND)"
+                    required>
                 <div class="text-right">
                     <button type="submit" class="btn btn-primary">Cập nhật</button>
                     <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Hủy</button>
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -306,10 +310,12 @@
         function openEditModal(service) {
             document.getElementById('editName').value = service.name;
             document.getElementById('editDescription').value = service.description;
+            document.getElementById('editPrice').value = service.price;
             const form = document.getElementById('editForm');
             form.action = `/admin/managespaservices/${service.id}/update`;
             document.getElementById('editModal').style.display = 'flex';
         }
+
 
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';

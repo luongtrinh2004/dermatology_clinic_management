@@ -43,10 +43,11 @@ class AdminSpaServiceController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
+            'price' => 'required|numeric|min:0',
         ]);
 
         $service = SpaServices::findOrFail($id);
-        $service->update($request->only(['name', 'description']));
+        $service->update($request->only(['name', 'description', 'price']));
 
         return redirect()->route('admin.managespaservices')->with('success', 'Cập nhật thành công');
     }

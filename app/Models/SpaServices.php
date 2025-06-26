@@ -15,6 +15,7 @@ class SpaServices extends Model
         'name',
         'description',
         'category_id',
+        'price',
     ];
 
     public function category()
