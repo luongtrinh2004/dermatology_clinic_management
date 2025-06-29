@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MedicalRecord;
 use App\Models\Doctor;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class MedicalRecordController extends Controller
 {
-
     // Hiển thị danh sách hồ sơ bệnh án cho Admin và AdminDoctor
     public function index(Request $request)
     {
@@ -20,29 +21,24 @@ class MedicalRecordController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('cccd', 'like', "%{$search}%")
-                    ->orWhere('diagnosis', 'like', "%{$search}%");
+                    ->orWhere('cccd', 'like', "%{$search}%");
             });
         }
 
         // Áp dụng tìm kiếm vào danh sách hồ sơ bệnh án
         $medicalRecords = $query->orderBy('id', 'asc')->paginate(10);
 
-
         // Lấy danh sách bác sĩ cho dropdown
         $doctors = Doctor::all();
 
-        // Kiểm tra nếu có hồ sơ cần chỉnh sửa
-        $editMedicalRecord = null;
-        if ($request->has('edit_id')) {
-            $editMedicalRecord = MedicalRecord::find($request->input('edit_id'));
+        // Kiểm tra nếu có hồ sơ cần chỉnh sửa hoặc xem
+        $viewMedicalRecord = null;
+        if ($request->has('view_id')) {
+            $viewMedicalRecord = MedicalRecord::find($request->input('view_id'));
         }
 
-        return view('role.managemedicalrecords', compact('medicalRecords', 'doctors', 'search', 'editMedicalRecord'));
+        return view('role.managemedicalrecords', compact('medicalRecords', 'doctors', 'search', 'viewMedicalRecord'));
     }
-
 
     // Hiển thị giao diện tạo hồ sơ bệnh án mới
     public function create()
@@ -51,67 +47,88 @@ class MedicalRecordController extends Controller
         return view('role.managemedicalrecords.create', compact('doctors'));
     }
 
-    // Lưu hồ sơ bệnh án mới vào database
+    // Lưu hồ sơ bệnh án mới vào database và IPFS
     public function store(Request $request)
     {
-        $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'age' => 'required|integer',
-            'cccd' => 'required|string|max:255',
-            'service' => 'nullable|string|max:255',
-            'exam_date' => 'required|date',
-            'cost' => 'nullable|numeric',
-            'status' => 'required|in:paid,unpaid',
-            'diagnosis' => 'required|string',
-            'prescription' => 'nullable|string',
-            'notes' => 'nullable|string',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'cccd' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:20',
+                'age' => 'required|integer',
+                'service' => 'nullable|string|max:255',
+                'exam_date' => 'required|date',
+                'cost' => 'nullable|numeric',
+                'status' => 'required|in:paid,unpaid',
+                'diagnosis' => 'required|string',
+                'prescription' => 'nullable|string',
+                'notes' => 'nullable|string',
+            ]);
 
-        // Nhân giá trị cost với 1000 nếu có
-        if ($request->filled('cost')) {
-            $request->merge(['cost' => $request->input('cost') * 1000]);
+            // Nhân giá trị cost với 1000 nếu có
+            if ($request->filled('cost')) {
+                $request->merge(['cost' => $request->input('cost') * 1000]);
+            }
+
+            // Tạo file JSON chứa toàn bộ thông tin
+            $data = $request->only(['name', 'email', 'phone', 'age', 'cccd', 'service', 'exam_date', 'cost', 'status', 'diagnosis', 'prescription', 'notes', 'doctor_id']);
+            $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+            // Tạo file tạm
+            $tempPath = storage_path('app/public/data.json');
+            file_put_contents($tempPath, $json);
+
+            $response = Http::attach(
+                'file',
+                file_get_contents($tempPath),
+                'data.json'
+            )->post('http://localhost:8000/upload/');
+
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                $cid = $responseData['cid'] ?? null;
+
+                if ($cid) {
+                    // Kiểm tra bệnh nhân mới/cũ dựa trên cccd
+                    $existingRecord = MedicalRecord::where('cccd', $request->input('cccd'))->first();
+                    if (!$existingRecord) {
+                        // Bệnh nhân mới: Lưu toàn bộ dữ liệu vào database
+                        MedicalRecord::create(array_merge($data, ['cid' => $cid]));
+                        return redirect()->route('admindoctor.medicalrecords.index')
+                            ->with('success', 'Hồ sơ bệnh án đã được tạo thành công.');
+                    } else {
+                        // Bệnh nhân cũ: Chỉ gửi JSON, không lưu name và cccd
+                        MedicalRecord::create(['cid' => $cid, 'doctor_id' => $data['doctor_id']]);
+                        return redirect()->route('admindoctor.medicalrecords.index')
+                            ->with('success', 'Hồ sơ bệnh án đã được tạo thành công.');
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Không nhận được CID từ IPFS.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Lỗi khi lưu lên IPFS: ' . $response->body());
+            }
+        } catch (\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+            return redirect()->back()->with('success', 'Hồ sơ bệnh án được tạo thành công.');
         }
-
-        MedicalRecord::create($request->all());
-
-        return redirect()->route('admin.medicalrecords.index')
-            ->with('success', 'Hồ sơ bệnh án đã được tạo thành công.');
     }
 
     public function update(Request $request, $id)
     {
-        $record = MedicalRecord::findOrFail($id);
-
-        $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'age' => 'required|integer',
-            'cccd' => 'required|string|max:255',
-            'service' => 'nullable|string|max:255',
-            'exam_date' => 'required|date',
-            'cost' => 'nullable|numeric',
-            'status' => 'required|in:paid,unpaid',
-            'diagnosis' => 'required|string',
-            'prescription' => 'nullable|string',
-            'notes' => 'nullable|string',
-        ]);
-
-        // Nhân giá trị cost với 1000 nếu có
-        if ($request->filled('cost')) {
-            $request->merge(['cost' => $request->input('cost') * 1000]);
-        }
-
-        $record->update($request->all());
-
-        return redirect()->route('admin.medicalrecords.index')
-            ->with('success', 'Hồ sơ bệnh án đã được cập nhật thành công.');
+        // Không cần cập nhật, chỉ tạo mới bản ghi mới nếu cần thay đổi
+        return redirect()->route('admindoctor.medicalrecords.index')
+            ->with('error', 'Chỉ có thể tạo mới hồ sơ, không hỗ trợ chỉnh sửa.');
     }
-
 
     // Xóa hồ sơ bệnh án
     public function destroy($id)
@@ -119,7 +136,28 @@ class MedicalRecordController extends Controller
         $record = MedicalRecord::findOrFail($id);
         $record->delete();
 
-        return redirect()->route('admin.medicalrecords.index')
+        return redirect()->route('admindoctor.medicalrecords.index')
             ->with('success', 'Hồ sơ bệnh án đã được xóa thành công.');
+    }
+
+    // Xử lý GET request từ nút "Xem" để kiểm tra IPFS
+    public function checkIpfs($cccd)
+    {
+        try {
+            $response = Http::withOptions([
+                'timeout' => 60,
+                'allow_redirects' => ['max' => 5]
+            ])->get('http://127.0.0.1:8000/records', [
+                'cccd' => $cccd
+            ]);
+
+            if ($response->successful() && !empty($response->json()['records'])) {
+                return response()->json(['status' => 'Lấy dữ liệu thành công']);
+            } else {
+                return response()->json(['status' => 'Lấy dữ liệu thất bại']);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'Lấy dữ liệu thất bại']);
+        }
     }
 }
