@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package ipfs;
+
+// The greeting service definition.
+service MyIPFS {
+	// Unary
+	rpc SendIPFS (SendRequest) returns (IPFSReply);
+}
+
+// The request message containing the user's name.
+message SendRequest {
+  string message = 1;
+}
+
+// The response message containing the greetings.
+message IPFSReply {
+  string message = 1;
+}
