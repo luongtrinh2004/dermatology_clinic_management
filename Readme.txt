@@ -1,19 +1,30 @@
-1. Cài thư viện IPFS và Database
+1. Cài đặt thư viện IPFS và Database
+
+```
 pip install fastapi uvicorn python-multipart ipfshttpclient
 pip install mysql-connector-python
+```
 
-2. Chạy local IPFS
+2. Cài đặt thư viện gRPC
+
+```
+pip install grpcio-tools
+```
+
+3. Tạo các file thiết lập gRPC
+
+```
+python3 -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/ipfs.proto
+```
+
+4. Chạy local IPFS
+
+
+**Lưu ý: Cài đặt trước IPFS về máy tính**
+
+```
 ipfs daemon
+```
 
-3. Chạy code
+5. Chạy code
 uvicorn server_ipfs:app --reload
-
-4. Cài thư viện API cho Laravel
-composer require guzzlehttp/guzzle
-
-5. Cấu hình filesystem trong .env
-FILESYSTEM_DISK=public
-php artisan storage:link
-
-6. Cài thư viện DomPDF cho Laravel
-composer require barryvdh/laravel-dompdf
