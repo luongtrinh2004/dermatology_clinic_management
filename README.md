@@ -87,7 +87,31 @@ mysql -u root -p ten_database < laravel_backup.sql
 
 ```
 
-### 📌 6. Chạy ứng dụng
+### 📌 6. Cài thư viện API cho Laravel
+
+```sh
+composer require guzzlehttp/guzzle
+```
+
+### 📌 7. Cấu hình filesystem trong .env
+
+```sh
+FILESYSTEM_DISK=public
+```
+
+Chạy lệnh:
+
+```
+php artisan storage:link
+```
+
+### 📌 8. Cài thư viện DomPDF cho Laravel
+
+```sh
+composer require barryvdh/laravel-dompdf
+```
+
+### 📌 9. Chạy ứng dụng
 
 ```sh
 php artisan serve --port=8001
