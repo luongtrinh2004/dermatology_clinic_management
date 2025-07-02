@@ -20,8 +20,8 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\SpaController;
 use App\Http\Controllers\SpaAppointmentController;
 use App\Http\Controllers\AdminSpaServiceController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+
+
 
 
 // Trang chủ
@@ -122,7 +122,9 @@ Route::prefix('spa/appointments')->name('spa.appointments.')->group(function () 
 });
 
 
+
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
+
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/dashboard', function () {
         return view('role.admindoctor');
@@ -133,54 +135,27 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/patients', [DoctorController::class, 'showPatients'])->name('doctor.patients');
 
     // Quản lý hồ sơ bệnh án
-    
-    Route::get('/admindoctor/medicalrecords/{id}/edit', [MedicalRecordController::class, 'edit'])->name('admindoctor.medicalrecords.edit');
-    Route::put('/admindoctor/medicalrecords/{id}', [MedicalRecordController::class, 'update'])->name('admindoctor.medicalrecords.update');
-    Route::delete('/admindoctor/medicalrecords/{id}', [MedicalRecordController::class, 'destroy'])->name('admindoctor.medicalrecords.destroy');
+    Route::middleware(['auth', 'role:admindoctor'])->group(function () {
+        Route::get('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
+        Route::get('/admindoctor/medicalrecords/create', [DoctorMedicalRecordController::class, 'createFromAppointment'])->name('admindoctor.medicalrecords.create');
+        Route::post('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
+        Route::get('/admindoctor/medicalrecords/{id}/edit', [DoctorMedicalRecordController::class, 'edit'])->name('admindoctor.medicalrecords.edit');
+        Route::put('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'update'])->name('admindoctor.medicalrecords.update');
+        Route::delete('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'destroy'])->name('admindoctor.medicalrecords.destroy');
+        Route::get('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
+        Route::get('/admindoctor/medicalrecords/create', [DoctorMedicalRecordController::class, 'createFromAppointment'])->name('admindoctor.medicalrecords.create');
+        Route::post('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
+        Route::get('/admindoctor/medicalrecords/{id}/edit', [DoctorMedicalRecordController::class, 'edit'])->name('admindoctor.medicalrecords.edit');
+        Route::put('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'update'])->name('admindoctor.medicalrecords.update');
+        Route::delete('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'destroy'])->name('admindoctor.medicalrecords.destroy');
 
-    Route::get('/admindoctor/invoices/create', [InvoiceController::class, 'create'])->name('admindoctor.invoices.create');
-    Route::post('/admindoctor/invoices', [InvoiceController::class, 'store'])->name('admindoctor.invoices.store');
-    Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
-    Route::resource('admindoctor/invoices', InvoiceController::class);
-    Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
+        Route::get('/admindoctor/invoices/create', [InvoiceController::class, 'create'])->name('admindoctor.invoices.create');
+        Route::post('/admindoctor/invoices', [InvoiceController::class, 'store'])->name('admindoctor.invoices.store');
+        Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
+        Route::resource('admindoctor/invoices', InvoiceController::class);
+        Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
+    });
 });
-
-Route::get('/admindoctor/medicalrecords', [MedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
-Route::post('/admindoctor/medicalrecords/store', [MedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
-
-Route::get('/proxy/records/{cccd}', function (Request $request, $cccd) {
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
-    return response($response->body(), $response->status());
-})->name('proxy.records');
-
-Route::get('/admindoctor/medicalrecords/view-pdf', function (Request $request) {
-    $cccd = $request->query('cccd');
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
-    $data = json_decode($response->body(), true);
-
-    if (!$data || !isset($data['records']) || empty($data['records'])) {
-        return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
-    }
-
-    $records = $data['records']; // Lấy toàn bộ mảng records
-
-    $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
-    return $pdf->stream('medical_record_' . $cccd . '.pdf');
-})->name('admindoctor.medicalrecords.view-pdf');
-
-Route::get('/admindoctor/medicalrecords/download/{cccd}', function ($cccd) {
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
-    $data = json_decode($response->body(), true);
-
-    if (!$data || !isset($data['records']) || empty($data['records'])) {
-        return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
-    }
-
-    $records = $data['records']; // Lấy toàn bộ mảng records
-
-    $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
-    return $pdf->download('medical_record_' . $cccd . '.pdf');
-})->name('admindoctor.medicalrecords.download');
 
 
 // Routes cho AdminDoctor (Xem lịch nhưng không chỉnh sửa)

@@ -9,15 +9,26 @@ class MedicalRecord extends Model
 {
     use HasFactory;
 
+
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
     }
 
-    protected $fillable = [
-        'name',
-        'cccd',
-    ];
 
-    public $timestamps = false;
+    protected $fillable = [
+        'doctor_id',
+        'name',
+        'email',
+        'phone',
+        'age',
+        'cccd',
+        'service',
+        'exam_date',
+        'cost',
+        'status',
+        'diagnosis',
+        'prescription',
+        'notes'
+    ];
 }
