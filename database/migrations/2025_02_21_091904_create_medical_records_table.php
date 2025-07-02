@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
-class CreateMedicalRecordsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,26 +15,16 @@ class CreateMedicalRecordsTable extends Migration
     public function up()
     {
         Schema::create('medical_records', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('doctor_id');
-
-            $table->string('name');              // Có thể chỉnh sửa tên từ thông tin lịch hẹn
-            $table->string('email');             // Có thể chỉnh sửa email từ thông tin lịch hẹn
-            $table->string('phone');
-            $table->integer('age');
-            $table->string('cccd');              // Số căn cước công dân
-            $table->string('service')->nullable(); // Dịch vụ khám/chữa bệnh
-            $table->date('exam_date');          // Ngày khám: nếu bệnh nhân đến đúng giờ, chuyển ngày hẹn khám từ lịch hẹn vào đây
-            $table->decimal('cost', 8, 2)->nullable(); // Chi phí khám/chữa bệnh
-            $table->enum('status', ['paid', 'unpaid'])->default('unpaid'); // Trạng thái thanh toán
-            $table->text('diagnosis');          // Chẩn đoán
-            $table->text('prescription')->nullable(); // Toa thuốc
-            $table->text('notes')->nullable();        // Ghi chú thêm
-
-
-
-            $table->timestamps();
+            $table->bigIncrements('id'); // BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT, tự động tạo PRIMARY KEY
+            $table->string('name', 255)->collation('utf8mb4_unicode_ci')->nullable(false); // VARCHAR(255) NOT NULL
+            $table->string('cccd', 255)->collation('utf8mb4_unicode_ci')->nullable(false); // VARCHAR(255) NOT NULL
+            $table->unique('cccd'); // UNIQUE INDEX `cccd` (`cccd`) USING BTREE
         });
+
+        // Đặt thuộc tính bảng
+        DB::statement('ALTER TABLE medical_records COLLATE utf8mb4_unicode_ci');
+        DB::statement('ALTER TABLE medical_records ENGINE = InnoDB');
+        DB::statement('ALTER TABLE medical_records AUTO_INCREMENT = 21');
     }
 
     /**
@@ -45,4 +36,4 @@ class CreateMedicalRecordsTable extends Migration
     {
         Schema::dropIfExists('medical_records');
     }
-}
+};
