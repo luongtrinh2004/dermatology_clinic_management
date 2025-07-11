@@ -21,5 +21,5 @@ ipfs daemon
 4. Chạy code
 
 ```
-uvicorn server_ipfs:app --reload
+python grpc_ipfs.py
 ```
