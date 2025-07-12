@@ -51,28 +51,18 @@ git clone https://github.com/luongtrinh2004/Quan_Ly_Phong_Kham_Da_Lieu
 cd ...
 ```
 
-### 📌 2. Cấu hình môi trường
-
-```sh
-cp .env.example .env
-php artisan key:generate
-```
-
-🎡 Cập nhật file `.env` với thông tin database của bạn.
-
-### 📌 3. Cài đặt các dependencies
+### 📌 2. Cài đặt các dependencies
 
 ```sh
 composer install
 
 ```
 
-### 📌 4. Tạo database từ file laravel_backup.sql
+### 📌 3. Cấu hình môi trường
 
 ```sh
-
-mysql -u root -p ten_database < laravel_backup.sql
-
+cp .env.example .env
+php artisan key:generate
 ```
 
 ### 📌 4. Cập nhật file .env với thông tin database của bạn:
@@ -89,10 +79,42 @@ DB_PASSWORD=your_password
 
 ```
 
-### 📌 5. Chạy ứng dụng
+### 📌 5. Tạo database từ file laravel_backup.sql
 
 ```sh
-php artisan serve
+
+mysql -u root -p ten_database < laravel_backup.sql
+
+```
+
+### 📌 6. Cài thư viện API cho Laravel
+
+```sh
+composer require guzzlehttp/guzzle
+```
+
+### 📌 7. Cấu hình filesystem trong .env
+
+```sh
+FILESYSTEM_DISK=public
+```
+
+Chạy lệnh:
+
+```
+php artisan storage:link
+```
+
+### 📌 8. Cài thư viện DomPDF cho Laravel
+
+```sh
+composer require barryvdh/laravel-dompdf
+```
+
+### 📌 9. Chạy ứng dụng
+
+```sh
+php artisan serve --port=8001
 ```
 
 ---
