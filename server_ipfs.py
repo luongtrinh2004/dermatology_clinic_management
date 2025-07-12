@@ -9,6 +9,7 @@ import ipfs_pb2_grpc
 import ipfs_pb2
 import time
 import threading
+import uvicorn
 
 app = FastAPI()
 
@@ -68,6 +69,13 @@ async def upload_file(file: UploadFile = File(...)):
             if pin_response.status_code != 200:
                 print(f"Failed to pin CID {cid}: {pin_response.text}")
 
+            provide_api = f"http://127.0.0.1:5001/api/v0/routing/provide?arg={cid}"
+            provide_response = requests.post(provide_api)
+            if provide_response.status_code != 200:
+                print(f"Failed to propagate CID {cid}: {provide_response.text}")
+            else:
+                print(f"Successfully propagated CID {cid}")
+
             # Ghi vào DB
             cursor.execute("INSERT INTO records (cccd, cid) VALUES (%s, %s)", (cccd, cid))
             db.commit()
@@ -113,3 +121,6 @@ def get_records_by_name(cccd: str = Query(..., description="CCCD cần truy xu�
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lỗi truy vấn DB: {str(e)}")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
