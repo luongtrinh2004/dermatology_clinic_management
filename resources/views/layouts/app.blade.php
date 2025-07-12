@@ -83,6 +83,10 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/doctors') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
                              margin: 0 10px;">Bác Sĩ</a>
                     </li>
+
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/detection') }}" style="color: #0056b3; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
+                             margin: 0 10px;">Nhận diện bằng AI</a>
+                    </li>
                 </ul>
             </div>
         </div>

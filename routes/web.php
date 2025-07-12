@@ -20,6 +20,7 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\SpaController;
 use App\Http\Controllers\SpaAppointmentController;
 use App\Http\Controllers\AdminSpaServiceController;
+use App\Http\Controllers\DiseaseDetectionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -149,13 +150,13 @@ Route::get('/admindoctor/medicalrecords', [MedicalRecordController::class, 'inde
 Route::post('/admindoctor/medicalrecords/store', [MedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
 
 Route::get('/proxy/records/{cccd}', function (Request $request, $cccd) {
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
+    $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
     return response($response->body(), $response->status());
 })->name('proxy.records');
 
 Route::get('/admindoctor/medicalrecords/view-pdf', function (Request $request) {
     $cccd = $request->query('cccd');
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
+    $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
     $data = json_decode($response->body(), true);
 
     if (!$data || !isset($data['records']) || empty($data['records'])) {
@@ -169,7 +170,7 @@ Route::get('/admindoctor/medicalrecords/view-pdf', function (Request $request) {
 })->name('admindoctor.medicalrecords.view-pdf');
 
 Route::get('/admindoctor/medicalrecords/download/{cccd}', function ($cccd) {
-    $response = Http::get("http://127.0.0.1:8000/records/?cccd={$cccd}");
+    $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
     $data = json_decode($response->body(), true);
 
     if (!$data || !isset($data['records']) || empty($data['records'])) {
@@ -208,6 +209,9 @@ Route::get('/', [ServiceController::class, 'index_home'])->name('services.index_
 Route::get('/contact', function () {
     return view('contact'); // Trang Contact
 })->name('contact');
+
+Route::get('/detection', [DiseaseDetectionController::class, 'index'])->name('detection');
+Route::post('/detection/predict', [DiseaseDetectionController::class, 'predict'])->name('detection.predict');
 
 // Home Route sau khi đăng nhập
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');

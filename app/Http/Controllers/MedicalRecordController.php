@@ -124,7 +124,7 @@ class MedicalRecordController extends Controller
             $response = Http::withOptions([
                 'timeout' => 60,
                 'allow_redirects' => ['max' => 5]
-            ])->get('http://127.0.0.1:8000/records', [
+            ])->get('http://localhost:8000/records', [
                 'cccd' => $cccd
             ]);
 
