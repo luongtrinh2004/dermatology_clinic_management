@@ -29,5 +29,5 @@ ipfs daemon
 5. Chạy code
 
 ```
-uvicorn server_ipfs:app --reload
+python server_ipfs.py
 ```
