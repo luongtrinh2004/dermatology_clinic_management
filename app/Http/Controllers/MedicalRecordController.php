@@ -37,18 +37,12 @@ class MedicalRecordController extends Controller
         return view('role.managemedicalrecords', compact('medicalRecords', 'doctors', 'search', 'viewMedicalRecord'));
     }
 
-    // Hiển thị giao diện tạo hồ sơ bệnh án mới
-    public function create()
-    {
-        $doctors = Doctor::all();
-        return view('role.managemedicalrecords.create', compact('doctors'));
-    }
-
     // Lưu hồ sơ bệnh án mới vào database
     public function store(Request $request)
     {
         try {
             $request->validate([
+                'doctor_id' => 'required|exists:doctors,id',
                 'name' => 'required|string|max:255',
                 'cccd' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
@@ -67,7 +61,7 @@ class MedicalRecordController extends Controller
                 $request->merge(['cost' => $request->input('cost') * 1000]);
             }
 
-            $data = $request->only(['name', 'email', 'phone', 'age', 'cccd', 'service', 'exam_date', 'cost', 'status', 'diagnosis', 'prescription', 'notes', 'doctor_id']);
+            $data = $request->only(['doctor_id', 'name', 'email', 'phone', 'age', 'cccd', 'service', 'exam_date', 'cost', 'status', 'diagnosis', 'prescription', 'notes', 'doctor_id']);
             $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
             $tempPath = storage_path('app/public/data.json');
@@ -93,12 +87,12 @@ class MedicalRecordController extends Controller
                     if (!$existingRecord) {
                         // Bệnh nhân mới: Lưu toàn bộ dữ liệu vào database
                         MedicalRecord::create(array_merge($data, ['cid' => $cid]));
-                        return redirect()->route('admindoctor.medicalrecords.index')
+                        return redirect()->route('admin.medicalrecords.index')
                             ->with('success', 'Hồ sơ bệnh án đã được tạo thành công.');
                     } else {
                         // Bệnh nhân cũ: Chỉ gửi JSON, không lưu name và cccd
                         MedicalRecord::create(['cid' => $cid, 'doctor_id' => $data['doctor_id']]);
-                        return redirect()->route('admindoctor.medicalrecords.index')
+                        return redirect()->route('admin.medicalrecords.index')
                             ->with('success', 'Hồ sơ bệnh án đã được tạo thành công.');
                     }
                 } else {

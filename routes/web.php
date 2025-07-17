@@ -74,11 +74,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/appointments/{id}/approve', [AdminController::class, 'approveAppointment'])->name('admin.appointments.approve');
     Route::put('/admin/appointments/{id}/reject', [AdminController::class, 'rejectAppointment'])->name('admin.appointments.reject');
     Route::delete('/admin/appointments/{id}', [AdminController::class, 'deleteAppointment'])->name('admin.appointments.delete');
-    Route::get('/admin/medicalrecords', [MedicalRecordController::class, 'index'])->name('admin.medicalrecords.index');
-    Route::get('/admin/medicalrecords/{id}/edit', [MedicalRecordController::class, 'edit'])->name('admin.medicalrecords.edit');
-    Route::post('/admin/medicalrecords', [MedicalRecordController::class, 'store'])->name('admin.medicalrecords.store');
-    Route::put('/admin/medicalrecords/{id}', [MedicalRecordController::class, 'update'])->name('admin.medicalrecords.update');
-    Route::delete('/admin/medicalrecords/{id}', [MedicalRecordController::class, 'destroy'])->name('admin.medicalrecords.destroy');
     // Routes for managing supports
     Route::get('/admin/supports', [SupportController::class, 'index'])->name('admin.supports.index');
     Route::delete('/admin/supports/{id}', [SupportController::class, 'destroy'])->name('admin.supports.destroy');
@@ -133,12 +128,6 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/schedule', [DoctorController::class, 'showSchedule'])->name('doctor.schedule');
     Route::get('/admindoctor/patients', [DoctorController::class, 'showPatients'])->name('doctor.patients');
 
-    // Quản lý hồ sơ bệnh án
-    
-    Route::get('/admindoctor/medicalrecords/{id}/edit', [MedicalRecordController::class, 'edit'])->name('admindoctor.medicalrecords.edit');
-    Route::put('/admindoctor/medicalrecords/{id}', [MedicalRecordController::class, 'update'])->name('admindoctor.medicalrecords.update');
-    Route::delete('/admindoctor/medicalrecords/{id}', [MedicalRecordController::class, 'destroy'])->name('admindoctor.medicalrecords.destroy');
-
     Route::get('/admindoctor/invoices/create', [InvoiceController::class, 'create'])->name('admindoctor.invoices.create');
     Route::post('/admindoctor/invoices', [InvoiceController::class, 'store'])->name('admindoctor.invoices.store');
     Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
@@ -146,11 +135,50 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
 });
 
-Route::get('/admindoctor/medicalrecords', [MedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
-Route::post('/admindoctor/medicalrecords/store', [MedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
+// Quản lý hồ sơ bệnh án của admin
+Route::get('/admin/medicalrecords', [MedicalRecordController::class, 'index'])->name('admin.medicalrecords.index');
+Route::post('/admin/medicalrecords/store', [MedicalRecordController::class, 'store'])->name('admin.medicalrecords.store');
 
 Route::get('/proxy/records/{cccd}', function (Request $request, $cccd) {
     $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
+    return response($response->body(), $response->status());
+})->name('proxy.records');
+
+Route::get('/admin/medicalrecords/view-pdf', function (Request $request) {
+    $cccd = $request->query('cccd');
+    $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
+    $data = json_decode($response->body(), true);
+
+    if (!$data || !isset($data['records']) || empty($data['records'])) {
+        return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
+    }
+
+    $records = $data['records'];
+
+    $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
+    return $pdf->stream('medical_record_' . $cccd . '.pdf');
+})->name('admin.medicalrecords.view-pdf');
+
+Route::get('/admin/medicalrecords/download/{cccd}', function ($cccd) {
+    $response = Http::get("http://localhost:8000/records/?cccd={$cccd}");
+    $data = json_decode($response->body(), true);
+
+    if (!$data || !isset($data['records']) || empty($data['records'])) {
+        return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
+    }
+
+    $records = $data['records'];
+
+    $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
+    return $pdf->download('medical_record_' . $cccd . '.pdf');
+})->name('admin.medicalrecords.download');
+
+// Quản lý hồ sơ bệnh án của doctor
+Route::get('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
+Route::post('/admindoctor/medicalrecords/store', [DoctorMedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
+
+Route::get('/proxy/doctor_records/{cccd}', function (Request $request, $cccd) {
+    $response = Http::get("http://localhost:8000/doctor_records/?doctor_id={$cccd}");
     return response($response->body(), $response->status());
 })->name('proxy.records');
 
@@ -163,7 +191,7 @@ Route::get('/admindoctor/medicalrecords/view-pdf', function (Request $request) {
         return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
     }
 
-    $records = $data['records']; // Lấy toàn bộ mảng records
+    $records = $data['records'];
 
     $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
     return $pdf->stream('medical_record_' . $cccd . '.pdf');
@@ -177,12 +205,11 @@ Route::get('/admindoctor/medicalrecords/download/{cccd}', function ($cccd) {
         return redirect()->back()->with('error', 'Không tìm thấy bệnh án.');
     }
 
-    $records = $data['records']; // Lấy toàn bộ mảng records
+    $records = $data['records'];
 
     $pdf = PDF::loadView('pdf.medical_record', compact('records', 'cccd'));
     return $pdf->download('medical_record_' . $cccd . '.pdf');
 })->name('admindoctor.medicalrecords.download');
-
 
 // Routes cho AdminDoctor (Xem lịch nhưng không chỉnh sửa)
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {

@@ -36,7 +36,7 @@
         <h1 class="text-center mb-4" style="font-family: 'Poppins', sans-serif;">Quản lý Hồ Sơ Bệnh Án</h1>
 
         <!-- Form tìm kiếm hồ sơ bệnh án -->
-        <form method="GET" action="{{ route('admindoctor.medicalrecords.index') }}" class="mb-4">
+        <form method="GET" action="{{ route('admin.medicalrecords.index') }}" class="mb-4">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tên hoặc CCCD..."
                     value="{{ $search ?? '' }}">
@@ -47,12 +47,12 @@
         <!-- Form thêm/sửa hồ sơ bệnh án -->
         @if(isset($editMedicalRecord))
         <h3 class="mb-3">Sửa Hồ Sơ Bệnh Án</h3>
-        <form method="POST" action="{{ route('admindoctor.medicalrecords.update', $editMedicalRecord->id) }}">
+        <form method="POST" action="{{ route('admin.medicalrecords.update', $editMedicalRecord->id) }}">
             @csrf
             @method('PUT')
             @else
                 <h3 class="mb-3">Thêm Hồ Sơ Bệnh Án</h3>
-                <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
+                <form method="POST" action="{{ route('admin.medicalrecords.store') }}">
                     @csrf
             @endif
                 <div class="row">
@@ -195,8 +195,8 @@
                             <td>{{ $record->name }}</td>
                             <td>{{ $record->cccd }}</td>
                             <td>
-                                <button class="btn btn-info btn-sm view-pdf" data-cccd="{{ $record->cccd }}" data-id="{{ $record->id }}">Xem PDF</button>
-                                <a href="{{ route('admindoctor.medicalrecords.download', $record->cccd) }}" class="btn btn-success btn-sm">Tải về</a>
+                                <button class="btn btn-info btn-sm view-pdf" data-cccd="{{ $record->cccd }}" data-id="{{ $record->id }}">Xem</button>
+                                <a href="{{ route('admin.medicalrecords.download', $record->cccd) }}" class="btn btn-success btn-sm">Tải về</a>
                             </td>
                         </tr>
                         @endforeach
@@ -237,7 +237,7 @@
         $('.view-pdf').on('click', function() {
             const cccd = $(this).data('cccd');
             const modal = new bootstrap.Modal(document.getElementById('pdfModal'));
-            $('#pdfFrame').attr('src', `/admindoctor/medicalrecords/view-pdf?cccd=${encodeURIComponent(cccd)}`);
+            $('#pdfFrame').attr('src', `/admin/medicalrecords/view-pdf?cccd=${encodeURIComponent(cccd)}`);
             modal.show();
         });
     </script>
