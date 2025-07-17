@@ -15,10 +15,11 @@ app = FastAPI()
 
 # Kết nối DB
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="1234",
-    database="ipfs_data"
+    host = "",
+    port = ,
+    user = "",
+    password = "",
+    database = "ipfs_data"
 )
 cursor = db.cursor()
 
@@ -50,7 +51,11 @@ async def upload_file(file: UploadFile = File(...)):
         # Đọc nội dung JSON
         with open(temp_file_path, 'r', encoding='utf-8') as f:
             json_data = json.load(f)
-        cccd = json_data.get("cccd") or json_data.get("ten") or "Unknown"
+        cccd = json_data.get("cccd")
+        name = json_data.get("name")
+        doctor_id = json_data.get("doctor_id")
+        if doctor_id is None:
+            doctor_id = "Unknown"
 
         # Gửi file đến IPFS
         with open(temp_file_path, 'rb') as f:
@@ -77,7 +82,7 @@ async def upload_file(file: UploadFile = File(...)):
                 print(f"Successfully propagated CID {cid}")
 
             # Ghi vào DB
-            cursor.execute("INSERT INTO records (cccd, cid) VALUES (%s, %s)", (cccd, cid))
+            cursor.execute("INSERT INTO records (doctor_id, name, cccd, cid) VALUES (%s, %s, %s, %s)", (doctor_id, name, cccd, cid))
             db.commit()
 
             # Gửi CID qua gRPC
@@ -86,6 +91,7 @@ async def upload_file(file: UploadFile = File(...)):
             return {
                 "filename": file.filename,
                 "cccd": cccd,
+                "doctor_id": doctor_id,
                 "cid": cid,
                 "ipfs_url": f"https://ipfs.io/ipfs/{cid}"
             }
@@ -121,6 +127,26 @@ def get_records_by_name(cccd: str = Query(..., description="CCCD cần truy xu�
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lỗi truy vấn DB: {str(e)}")
+
+@app.get("/doctor_records/")
+async def get_doctor_records(doctor_id: int):
+    try:
+        # Truy vấn records theo doctor_id
+        cursor.execute("SELECT cccd, cid, name FROM records WHERE doctor_id = %s", (doctor_id,))
+        records = cursor.fetchall()
+
+        if not records:
+            return {"records": []}
+
+        result = []
+        for record in records:
+            cccd, cid, name = record
+            result.append({"cccd": cccd, "name": name, "cid": cid})
+
+        return {"records": result}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
