@@ -131,7 +131,6 @@ def get_records_by_name(cccd: str = Query(..., description="CCCD cần truy xu�
 @app.get("/doctor_records/")
 async def get_doctor_records(doctor_id: int):
     try:
-        # Truy vấn records theo doctor_id
         cursor.execute("SELECT cccd, cid, name FROM records WHERE doctor_id = %s", (doctor_id,))
         records = cursor.fetchall()
 
