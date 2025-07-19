@@ -29,5 +29,5 @@ pip install -r requirements.txt
 ### 3. Chạy chương trình
 
 ```
-uvicorn main:app --reload --port=8002
+uvicorn main:app --host 0.0.0.0 --port 8002 --reload
 ```
