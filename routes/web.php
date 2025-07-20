@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 
+
 // Trang chủ
 Route::get('/', function () {
     return view('home'); // Trang Home
@@ -41,7 +42,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-doctors', [DoctorController::class, 'search'])->name('doctors.search');
 Route::get('/doctors/search-list', [DoctorController::class, 'search_doctors_list'])->name('doctors.search_list');
 Route::get('/spa/service/{id}', [SpaController::class, 'show'])->name('spa.service.show');
-
+Route::get('/admindoctor/medicalrecords/create', [DoctorMedicalRecordController::class, 'create'])->name('admindoctor.medicalrecords.create');
 Route::get('/spa', [SpaController::class, 'index'])->name('spa.index');
 // Đúng route cho "Đặt lịch"
 Route::get('/spa/appointments/create/{service_id?}', [SpaAppointmentController::class, 'create'])
@@ -74,6 +75,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/appointments/{id}/approve', [AdminController::class, 'approveAppointment'])->name('admin.appointments.approve');
     Route::put('/admin/appointments/{id}/reject', [AdminController::class, 'rejectAppointment'])->name('admin.appointments.reject');
     Route::delete('/admin/appointments/{id}', [AdminController::class, 'deleteAppointment'])->name('admin.appointments.delete');
+    Route::get('/admin/medicalrecords', [MedicalRecordController::class, 'index'])->name('admin.medicalrecords.index');
+    Route::get('/admin/medicalrecords/{id}/edit', [MedicalRecordController::class, 'edit'])->name('admin.medicalrecords.edit');
+    Route::post('/admin/medicalrecords', [MedicalRecordController::class, 'store'])->name('admin.medicalrecords.store');
+    Route::put('/admin/medicalrecords/{id}', [MedicalRecordController::class, 'update'])->name('admin.medicalrecords.update');
+    Route::delete('/admin/medicalrecords/{id}', [MedicalRecordController::class, 'destroy'])->name('admin.medicalrecords.destroy');
     // Routes for managing supports
     Route::get('/admin/supports', [SupportController::class, 'index'])->name('admin.supports.index');
     Route::delete('/admin/supports/{id}', [SupportController::class, 'destroy'])->name('admin.supports.destroy');
@@ -118,7 +124,9 @@ Route::prefix('spa/appointments')->name('spa.appointments.')->group(function () 
 });
 
 
+
 // Routes cho quản lý Hồ Sơ Bệnh Án (Medical Records)
+
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/dashboard', function () {
         return view('role.admindoctor');
@@ -128,12 +136,27 @@ Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/schedule', [DoctorController::class, 'showSchedule'])->name('doctor.schedule');
     Route::get('/admindoctor/patients', [DoctorController::class, 'showPatients'])->name('doctor.patients');
 
-    Route::get('/admindoctor/invoices/create', [InvoiceController::class, 'create'])->name('admindoctor.invoices.create');
-    Route::post('/admindoctor/invoices', [InvoiceController::class, 'store'])->name('admindoctor.invoices.store');
-    Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
-    Route::resource('admindoctor/invoices', InvoiceController::class);
-    Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
+    // Quản lý hồ sơ bệnh án
+    Route::middleware(['auth', 'role:admindoctor'])->group(function () {
+        Route::get('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'index'])->name('admindoctor.medicalrecords.index');
+        Route::get(
+            '/admindoctor/medicalrecords/create',
+            [DoctorMedicalRecordController::class, 'create']
+        )->name('admindoctor.medicalrecords.create');
+        Route::post('/admindoctor/medicalrecords', [DoctorMedicalRecordController::class, 'store'])->name('admindoctor.medicalrecords.store');
+        Route::get('/admindoctor/medicalrecords/{id}/edit', [DoctorMedicalRecordController::class, 'edit'])->name('admindoctor.medicalrecords.edit');
+        Route::put('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'update'])->name('admindoctor.medicalrecords.update');
+        Route::delete('/admindoctor/medicalrecords/{id}', [DoctorMedicalRecordController::class, 'destroy'])->name('admindoctor.medicalrecords.destroy');
+
+        Route::get('/admindoctor/invoices/create', [InvoiceController::class, 'create'])->name('admindoctor.invoices.create');
+        Route::post('/admindoctor/invoices', [InvoiceController::class, 'store'])->name('admindoctor.invoices.store');
+        Route::get('/admindoctor/invoices', [InvoiceController::class, 'index'])->name('admindoctor.invoices.index');
+        Route::resource('admindoctor/invoices', InvoiceController::class);
+        Route::get('/admindoctor/invoices/{id}/print', [InvoiceController::class, 'print'])->name('admindoctor.invoices.print');
+    });
 });
+
+
 
 // Quản lý hồ sơ bệnh án của admin
 Route::get('/admin/medicalrecords', [MedicalRecordController::class, 'index'])->name('admin.medicalrecords.index');
@@ -211,6 +234,8 @@ Route::get('/admindoctor/medicalrecords/download/{cccd}', function ($cccd) {
     return $pdf->download('medical_record_' . $cccd . '.pdf');
 })->name('admindoctor.medicalrecords.download');
 
+
+
 // Routes cho AdminDoctor (Xem lịch nhưng không chỉnh sửa)
 Route::middleware(['auth', 'role:admindoctor'])->group(function () {
     Route::get('/admindoctor/dashboard', function () {
@@ -239,6 +264,7 @@ Route::get('/contact', function () {
 
 Route::get('/detection', [DiseaseDetectionController::class, 'index'])->name('detection');
 Route::post('/detection/predict', [DiseaseDetectionController::class, 'predict'])->name('detection.predict');
+
 
 // Home Route sau khi đăng nhập
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
