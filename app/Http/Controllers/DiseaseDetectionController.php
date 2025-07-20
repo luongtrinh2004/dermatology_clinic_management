@@ -23,7 +23,7 @@ class DiseaseDetectionController extends Controller
             $response = Http::attach(
                 'file', $file->get(), $file->getClientOriginalName()
             )->withOptions(['http_errors' => false])
-            ->post('http://localhost:8002/predict');
+            ->post('http://3.107.159.98:8002/predict');
 
             $responseBody = $response->body();
             $responseData = json_decode($responseBody, true);
