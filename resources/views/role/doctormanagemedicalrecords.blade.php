@@ -46,17 +46,16 @@
 
         <!-- Form thêm/sửa hồ sơ bệnh án -->
         @if(isset($editMedicalRecord))
-        <h3 class="mb-3">
-            {{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? 'Sửa Hồ Sơ Bệnh Án' : 'Tạo Hồ Sơ Bệnh Án') : 'Thêm Hồ Sơ Bệnh Án' }}
-        </h3>
-        <form method="POST" action="{{ $editMedicalRecord->id ? route('admindoctor.medicalrecords.update', $editMedicalRecord->id) : route('admindoctor.medicalrecords.store') }}">
-            @csrf
-            @method('PUT')
-            @else
-                <h3 class="mb-3">Thêm Hồ Sơ Bệnh Án</h3>
-                <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
-                    @csrf
-            @endif
+            <h3 class="mb-3">
+                {{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? 'Sửa Hồ Sơ Bệnh Án' : 'Tạo Hồ Sơ Bệnh Án') : 'Thêm Hồ Sơ Bệnh Án' }}
+            </h3>
+            <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
+                @csrf
+        @else
+            <h3 class="mb-3">Thêm Hồ Sơ Bệnh Án</h3>
+            <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
+                @csrf
+        @endif
                 <div class="row">
                     <!-- Chọn Bác Sĩ -->
                     <div class="col-md-4 mb-2">
@@ -166,10 +165,11 @@
 
                     <!-- Nút Gửi -->
                     <div class="col-12 mb-2">
-                        <button type="submit"
+                        <!-- <button type="submit"
                             class="btn {{ isset($editMedicalRecord) ? 'btn-warning' : 'btn-success' }} w-100">
                             {{ isset($editMedicalRecord) ? 'Lưu Thay Đổi' : 'Thêm Hồ Sơ Bệnh Án' }}
-                        </button>
+                        </button> -->
+                        <button type="submit" class="btn btn-success w-100">Thêm Hồ Sơ Bệnh Án</button>
                     </div>
                 </div>
             </form>
