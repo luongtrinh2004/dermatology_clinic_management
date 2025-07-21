@@ -46,14 +46,17 @@
 
         <!-- Form thêm/sửa hồ sơ bệnh án -->
         @if(isset($editMedicalRecord))
-            <h3 class="mb-3">
-                {{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? 'Sửa Hồ Sơ Bệnh Án' : 'Tạo Hồ Sơ Bệnh Án') : 'Thêm Hồ Sơ Bệnh Án' }}
-            </h3>
-            <form method="POST" action="{{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? route('admindoctor.medicalrecords.update', $editMedicalRecord->id) : route('admindoctor.medicalrecords.store')) : route('admindoctor.medicalrecords.store') }}">
-                @csrf
-                @if(isset($editMedicalRecord) && $editMedicalRecord->id)
-                    @method('PUT')
-                @endif
+        <h3 class="mb-3">
+            {{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? 'Sửa Hồ Sơ Bệnh Án' : 'Tạo Hồ Sơ Bệnh Án') : 'Thêm Hồ Sơ Bệnh Án' }}
+        </h3>
+        <form method="POST" action="{{ $editMedicalRecord->id ? route('admindoctor.medicalrecords.update', $editMedicalRecord->id) : route('admindoctor.medicalrecords.store') }}">
+            @csrf
+            @method('PUT')
+            @else
+                <h3 class="mb-3">Thêm Hồ Sơ Bệnh Án</h3>
+                <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
+                    @csrf
+            @endif
                 <div class="row">
                     <!-- Chọn Bác Sĩ -->
                     <div class="col-md-4 mb-2">
@@ -216,7 +219,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 
     <footer class="footer">
         <!-- Footer content remains unchanged -->
