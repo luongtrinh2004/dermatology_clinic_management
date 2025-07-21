@@ -46,15 +46,14 @@
 
         <!-- Form thêm/sửa hồ sơ bệnh án -->
         @if(isset($editMedicalRecord))
-        <h3 class="mb-3">Sửa Hồ Sơ Bệnh Án</h3>
-        <form method="POST" action="{{ route('admindoctor.medicalrecords.update', $editMedicalRecord->id) }}">
-            @csrf
-            @method('PUT')
-            @else
-                <h3 class="mb-3">Thêm Hồ Sơ Bệnh Án</h3>
-                <form method="POST" action="{{ route('admindoctor.medicalrecords.store') }}">
-                    @csrf
-            @endif
+            <h3 class="mb-3">
+                {{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? 'Sửa Hồ Sơ Bệnh Án' : 'Tạo Hồ Sơ Bệnh Án') : 'Thêm Hồ Sơ Bệnh Án' }}
+            </h3>
+            <form method="POST" action="{{ isset($editMedicalRecord) ? ($editMedicalRecord->id ? route('admindoctor.medicalrecords.update', $editMedicalRecord->id) : route('admindoctor.medicalrecords.store')) : route('admindoctor.medicalrecords.store') }}">
+                @csrf
+                @if(isset($editMedicalRecord) && $editMedicalRecord->id)
+                    @method('PUT')
+                @endif
                 <div class="row">
                     <!-- Chọn Bác Sĩ -->
                     <div class="col-md-4 mb-2">
@@ -82,6 +81,7 @@
                         <label for="phone" class="form-label">Số Điện Thoại</label>
                         <input type="text" name="phone" id="phone" class="form-control"
                             value="{{ $editMedicalRecord->phone ?? old('phone') }}" required>
+                            
                     </div>
 
                     <!-- Tuổi -->
@@ -157,7 +157,8 @@
                     <div class="col-12 mb-2">
                         <label for="notes" class="form-label">Ghi Chú</label>
                         <textarea name="notes" id="notes" class="form-control"
-                            rows="3">{{ $editMedicalRecord->notes ?? old('notes') }}</textarea>
+                            rows="3">{{ $editMedicalRecord->notes ?? old('notes') }}
+                        </textarea>
                     </div>
 
                     <!-- Nút Gửi -->
@@ -215,7 +216,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <footer class="footer">
         <!-- Footer content remains unchanged -->
