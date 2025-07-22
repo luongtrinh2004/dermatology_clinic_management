@@ -291,6 +291,8 @@
                         <option value="{{ $cat->id }}">{{ $cat->title }}</option>
                     @endforeach
                 </select>
+                <input type="number" name="price" id="editPrice" class="form-control mb-2" placeholder="Giá dịch vụ (VND)"
+                    required>
                 <div class="text-right">
                     <button type="submit" class="btn btn-success">Thêm</button>
                     <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Hủy</button>
